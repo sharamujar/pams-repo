@@ -1,21 +1,26 @@
 import { findAll, create, findById, update, remove } from '../repositories/userRepository.js';
 
-export async function getAllUsers() {
-    return await findAll();
+export async function getAllUsers(req, res) {
+    var allUsers = await findAll();
+    res.status(200).json(allUsers);
+}
+    
+export async function createUser(req, res) {
+    await create(req.params.userData);
+    return res.status(201);
 }
 
-export async function createUser(userData) {
-    return await create(userData);
-}
-
-export async function getUserById(id) {
-    return await findById(id);
+export async function getUserById(req, res) {
+    var user = await findById(req.params.id);
+    return res.status(200).json(user);
 }
 
 export async function updateUser(id, userData) {
-    return await update(id, userData);
+    await update(id, userData);
+    return res.status(200);
 }
 
-export async function deleteUser(id) {
-    return await remove(id);
+export async function deleteUser(req, res) {
+    await remove(req.params.id);
+    return res.status(200);
 }
