@@ -10,18 +10,43 @@ PAMS/
 │   ├── migrations/
 │   ├── seeds/
 ├── src/
-│   ├── routes/
+│   ├── config/
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
-│   ├── services/
-│   └── repositories/
+│   ├── repositories/
+│   └── routes/
 ├── app.js
 ├── .env
 ├── .gitignore
 ├── package.json
 └── README.md
 ```
+## Data Flow Architecture
+
+```
+Client Request
+    ↓
+Express Router (routes/)
+    ↓
+Middleware (middleware/)
+    ↓
+Controller (controllers/)
+    ↓
+Repository Layer (repositories/)
+    ↓
+Database (database)
+    ↓
+Response back to Client
+```
+
+### Flow Description
+- **Routes**: Define API endpoints
+- **Middleware**: Handle authentication, validation, logging
+- **Controllers**: Process requests and coordinate services
+- **Repositories**: Handle data access and queries
+- **Models**: Define database schemas
+- **Database**: Persist and retrieve data
 
 ## Installation
 ```bash
