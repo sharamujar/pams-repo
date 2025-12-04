@@ -6,7 +6,14 @@ export async function getAllUsers(req, res) {
 }
     
 export async function createUser(req, res) {
-    await create(req.params.userData);
+    var newUser = req.body;
+    if (!newUser) {
+        return res.status(400).json({ error: 'User data is required' });
+    }
+    if (!newUser.full_name || !newUser.role || !newUser.username) {
+        return res.status(400).json({ error: 'full_name, role, and username are required fields' });
+    }
+    await create(newUser);
     return res.status(201);
 }
 
