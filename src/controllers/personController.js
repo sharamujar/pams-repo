@@ -1,4 +1,4 @@
-import { findAllPersons, createPWD, findPersonById, updatePerson, removePerson } from '../repositories/personsRepository.js';
+import { findAllPersons, createPWD, findPersonById, updatePerson, removePerson } from '../repositories/personRepository.js';
 
 export async function getAllPersons(req, res) {
     var allPersons = await findAllPersons();

@@ -5,7 +5,7 @@ import {
     createAnnouncement,
     updateAnnouncement,
     deleteAnnouncement 
-} from '../controllers/announcementsController.js';
+} from '../controllers/announcementController.js';
 
 const router = Router();
 

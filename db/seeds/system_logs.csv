@@ -1,0 +1,11 @@
+Staff_ID,Action,Timestamp,Affected_Record_ID,Module
+1,Created PWD,2019-03-15 08:30:00,1,persons
+2,Updated Service Type,2019-06-22 14:15:00,2,service_types
+3,Created Appointment,2020-01-10 09:00:00,1,appointments
+1,Created Benefit Eligibility,2020-04-18 11:20:00,3,benefit_eligibility
+4,Archived Yearly Record,2021-02-05 15:45:00,2,yearly_archive
+3,Posted Announcement,2021-07-11 13:00:00,2,announcements
+4,Updated PWD Contact,2022-08-03 10:50:00,5,persons
+2,Created Appointment,2023-01-12 16:30:00,4,appointments
+3,Updated Service Transaction,2023-05-20 09:40:00,7,transactions
+1,Created PWD,2023-07-22 14:05:00,20,persons
