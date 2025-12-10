@@ -5,6 +5,8 @@ import bodyParser from 'body-parser'
 import userRoutes from './src/routes/userRoutes.js'
 import announcementRoutes from './src/routes/announcementRoutes.js'
 import personRoutes from './src/routes/personRoutes.js';
+import benefitEligibilityRoutes from './src/routes/benefitEligibilityRoutes.js';
+
 
 
 const app = express()
@@ -15,6 +17,7 @@ app.use(bodyParser.json());
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/announcements", announcementRoutes);
 app.use('/api/v1/persons', personRoutes);
+app.use('/api/v1/benefit-eligibility', benefitEligibilityRoutes);
 
 app.use(
   '/reference',
