@@ -12,9 +12,9 @@ export async function createArchive(req, res) {
         return res.status(400).json({ error: 'Yearly archive data is required' });
     }
 
-    if (!newRecord.year || !newRecord.total_pwd_served || !newRecord.total_assistance_given || !newRecord.total_amount) {
+    if (!newRecord.year || !newRecord.total_person_served || !newRecord.total_assistance_given || !newRecord.total_amount) {
         return res.status(400).json({
-            error: 'year, total_pwd_served, total_assistance_given, and total_amount are required fields'
+            error: 'year, total_person_served, total_assistance_given, and total_amount are required fields'
         });
     }
 

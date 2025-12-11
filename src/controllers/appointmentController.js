@@ -13,14 +13,14 @@ export async function createAppointment(req, res) {
     }
 
     if (
-        !newAppointment.PWD_ID ||
-        !newAppointment.Service_ID ||
-        !newAppointment.Preferred_date ||
-        newAppointment.Status === undefined ||
-        !newAppointment.Staff_ID
+        !newAppointment.person_id ||
+        !newAppointment.service_id ||
+        !newAppointment.preferred_date ||
+        newAppointment.status === undefined ||
+        !newAppointment.user_id
     ) {
         return res.status(400).json({ 
-            error: 'PWD_ID, Service_ID, Preferred_date, Status, and Staff_ID are required fields' 
+            error: 'person_id, service_id, preferred_date, status, and user_id are required fields' 
         });
     }
 
