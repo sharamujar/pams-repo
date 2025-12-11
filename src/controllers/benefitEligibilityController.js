@@ -13,9 +13,9 @@ export async function createBenefitEligibility(req, res) {
     }
 
     
-    if (!newBenefit.Benefit || newBenefit.Status === undefined || !newBenefit.Evaluated_By) {
+    if (!newBenefit.Benefit || newBenefit.Status === undefined || !newBenefit.user_id) {
         return res.status(400).json({ 
-            error: 'Benefit, Status, and Evaluated_By are required fields' 
+            error: 'Benefit, Status, and user_id are required fields' 
         });
     }
 
