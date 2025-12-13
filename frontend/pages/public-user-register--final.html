@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAMS - Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            width: 40%;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0a1551 100%);
+            padding: 40px;
+            color: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo::before {
+            content: "🏛️";
+            margin-right: 10px;
+            font-size: 32px;
+        }
+
+        .system-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            width: 85%;
+            line-height: 1.6;
+            font-size: 15px;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .learn-more {
+            background: #FFC107;
+            color: #000;
+        }
+
+        .learn-more:hover {
+            background: #FFB300;
+        }
+
+        .features {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .features:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            width: 60%;
+            padding: 60px 80px;
+            overflow-y: auto;
+        }
+
+        .welcome {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1E3A8A;
+        }
+
+        .register-label {
+            font-size: 15px;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        /* Messages */
+        .error-message {
+            background-color: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            border-left: 4px solid #c33;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background-color: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            border-left: 4px solid #3c3;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .field-error {
+            color: #c33;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .field-error.show {
+            display: block;
+        }
+
+        input.error {
+            border-color: #c33;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        label .required {
+            color: #c33;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1E3A8A;
+        }
+
+        .checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .check {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .check input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .check a {
+            color: #1E3A8A;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .check a:hover {
+            text-decoration: underline;
+        }
+
+        .create-btn {
+            background: #1E3A8A;
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .create-btn:hover:not(:disabled) {
+            background: #142b66;
+        }
+
+        .create-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .create-btn .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .create-btn.loading .spinner {
+            display: block;
+        }
+
+        .create-btn.loading .button-text {
+            visibility: hidden;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .login-text {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #444;
+            text-align: center;
+        }
+
+        .login-text a {
+            color: #1E3A8A;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .password-strength.show {
+            display: block;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background-color: #dc3545;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background-color: #ffc107;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background-color: #28a745;
+        }
+
+        .password-strength-text {
+            font-size: 12px;
+            margin-top: 3px;
+            display: none;
+        }
+
+        .password-strength-text.show {
+            display: block;
+        }
+
+        /* Bottom-left fixed timestamp */
+        #footer-timestamp {
+            position: fixed;
+            left: 12px;
+            bottom: 8px;
+            font-size: 13px;
+            color: #000; /* black text */
+            background: transparent; /* no background */
+            padding: 0; /* no padding */
+            border-radius: 0;
+            box-shadow: none;
+            white-space: nowrap; /* prevent text wrap */
+            line-height: 1;
+            font-family: inherit;
+            z-index: 9999;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+            .left-panel {
+                height: auto;
+                padding: 30px;
+            }
+            .right-panel {
+                padding: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <div class="left-content">
+                <div class="logo">PAMS LOGO</div>
+
+                <h2 class="system-title">PWD Assistance Management System (PAMS)</h2>
+
+                <p class="description">
+                    Register for an account to apply for PWD assistance, track your applications,
+                    and receive official announcements from your barangay.
+                </p>
+
+                <div class="button-group">
+                    <a href="/about" class="btn learn-more">Learn More</a>
+                    <a href="/features" class="btn features">Our Features</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel">
+            <h1 class="welcome">Welcome to PAMS!</h1>
+            <p class="register-label">Register your account</p>
+
+            <!-- Error/Success Messages -->
+            <div id="errorMessage" class="error-message" role="alert"></div>
+            <div id="successMessage" class="success-message" role="alert"></div>
+
+            <form id="registerForm" action="/api/auth/register" method="POST">
+
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" id="csrf_token" value="">
+
+                <div class="row">
+                    <div class="field">
+                        <label>First Name <span class="required">*</span></label>
+                        <input type="text" name="first_name" id="first_name" required autocomplete="given-name">
+                        <span class="field-error" id="error-first_name"></span>
+                    </div>
+
+                    <div class="field">
+                        <label>Last Name <span class="required">*</span></label>
+                        <input type="text" name="last_name" id="last_name" required autocomplete="family-name">
+                        <span class="field-error" id="error-last_name"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label>E-mail Address <span class="required">*</span></label>
+                        <input type="email" name="email" id="email" required autocomplete="email">
+                        <span class="field-error" id="error-email"></span>
+                    </div>
+
+                    <div class="field">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="tel" name="phone" id="phone" required autocomplete="tel" placeholder="+63 XXX XXX XXXX">
+                        <span class="field-error" id="error-phone"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" name="password" id="password" required autocomplete="new-password">
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                        </div>
+                        <span class="password-strength-text" id="passwordStrengthText"></span>
+                        <span class="field-error" id="error-password"></span>
+                    </div>
+
+                    <div class="field">
+                        <label>Confirm Password <span class="required">*</span></label>
+                        <input type="password" name="confirm_password" id="confirm_password" required autocomplete="new-password">
+                        <span class="field-error" id="error-confirm_password"></span>
+                    </div>
+                </div>
+
+                <div class="checkboxes">
+                    <label class="check">
+                        <input type="checkbox" name="newsletter" id="newsletter" value="1">
+                        <span>Yes, I want to receive PAMS newsletters</span>
+                    </label>
+
+                    <label class="check">
+                        <input type="checkbox" name="agree_terms" id="agree_terms" required>
+                        <span>I agree to all the <a href="/terms" target="_blank">Terms</a>, <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required">*</span></span>
+                    </label>
+                    <span class="field-error" id="error-agree_terms"></span>
+                </div>
+
+                <button type="submit" class="create-btn" id="submitBtn">
+                    <span class="button-text">Create My Account</span>
+                    <span class="spinner"></span>
+                </button>
+
+                <p class="login-text">
+                    Already have an account?
+                    <a href="/auth/login">Log In</a>
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div id="footer-timestamp" aria-live="polite" aria-atomic="true">00-00-0000 00:00:00</div>
+
+    <script>
+        // Clock functionality
+        (function(){
+            const el = document.getElementById('footer-timestamp');
+            function pad(n){ return n < 10 ? '0' + n : n }
+            function format(d){
+                return pad(d.getDate()) + '-' + pad(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' +
+                    pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+            }
+            function tick(){
+                if(el) el.textContent = format(new Date());
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+
+        // Form handling
+        (function() {
+            const form = document.getElementById('registerForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+
+            // Password strength checker
+            const passwordInput = document.getElementById('password');
+            const strengthIndicator = document.getElementById('passwordStrength');
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                
+                if (password.length === 0) {
+                    strengthIndicator.classList.remove('show');
+                    strengthText.classList.remove('show');
+                    return;
+                }
+
+                strengthIndicator.classList.add('show');
+                strengthText.classList.add('show');
+
+                let strength = 0;
+                if (password.length >= 8) strength++;
+                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+                if (/\d/.test(password)) strength++;
+                if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+                strengthBar.className = 'password-strength-bar';
+                
+                if (strength <= 1) {
+                    strengthBar.classList.add('weak');
+                    strengthText.textContent = 'Weak password';
+                    strengthText.style.color = '#dc3545';
+                } else if (strength <= 3) {
+                    strengthBar.classList.add('medium');
+                    strengthText.textContent = 'Medium password';
+                    strengthText.style.color = '#ffc107';
+                } else {
+                    strengthBar.classList.add('strong');
+                    strengthText.textContent = 'Strong password';
+                    strengthText.style.color = '#28a745';
+                }
+            });
+
+            // Hide messages
+            function hideMessages() {
+                errorMsg.classList.remove('show');
+                successMsg.classList.remove('show');
+                
+                // Clear field errors
+                document.querySelectorAll('.field-error').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('input').forEach(el => {
+                    el.classList.remove('error');
+                });
+            }
+
+            // Show error message
+            function showError(message, fieldErrors = {}) {
+                hideMessages();
+                errorMsg.textContent = message;
+                errorMsg.classList.add('show');
+
+                // Show field-specific errors
+                Object.keys(fieldErrors).forEach(field => {
+                    const errorEl = document.getElementById(`error-${field}`);
+                    const inputEl = document.getElementById(field);
+                    
+                    if (errorEl && inputEl) {
+                        errorEl.textContent = fieldErrors[field];
+                        errorEl.classList.add('show');
+                        inputEl.classList.add('error');
+                    }
+                });
+
+                // Scroll to top to show error
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Show success message
+            function showSuccess(message) {
+                hideMessages();
+                successMsg.textContent = message;
+                successMsg.classList.add('show');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Client-side validation
+            function validateForm() {
+                const formData = new FormData(form);
+                const errors = {};
+
+                // Name validation
+                const firstName = formData.get('first_name').trim();
+                const lastName = formData.get('last_name').trim();
+                
+                if (firstName.length < 2) {
+                    errors.first_name = 'First name must be at least 2 characters';
+                }
+                if (lastName.length < 2) {
+                    errors.last_name = 'Last name must be at least 2 characters';
+                }
+
+                // Email validation
+                const email = formData.get('email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    errors.email = 'Please enter a valid email address';
+                }
+
+                // Phone validation (basic)
+                const phone = formData.get('phone').trim();
+                if (phone.length < 10) {
+                    errors.phone = 'Please enter a valid phone number';
+                }
+
+                // Password validation
+                const password = formData.get('password');
+                const confirmPassword = formData.get('confirm_password');
+
+                if (password.length < 8) {
+                    errors.password = 'Password must be at least 8 characters';
+                } else if (password !== confirmPassword) {
+                    errors.confirm_password = 'Passwords do not match';
+                }
+
+                // Terms agreement
+                if (!formData.get('agree_terms')) {
+                    errors.agree_terms = 'You must agree to the terms and privacy policy';
+                }
+
+                return Object.keys(errors).length === 0 ? null : errors;
+            }
+
+            // Handle form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideMessages();
+
+                // Client-side validation
+                const validationErrors = validateForm();
+                if (validationErrors) {
+                    showError('Please fix the errors below', validationErrors);
+                    return;
+                }
+
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+
+                // Get form data
+                const formData = new FormData(form);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                try {
+                    // Send registration request
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // Success
+                        showSuccess(result.message || 'Registration successful! Redirecting to login...');
+                        
+                        // Redirect to login after 2 seconds
+                        setTimeout(() => {
+                            window.location.href = result.redirect || '/auth/login';
+                        }, 2000);
+                    } else {
+                        // Error from server
+                        showError(
+                            result.message || 'Registration failed. Please try again.',
+                            result.errors || {}
+                        );
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('loading');
+                    }
+                } catch (error) {
+                    // Network or other error
+                    showError('Connection error. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }
+            });
+
+            // Optional: Get CSRF token from backend on page load
+            // Uncomment if your backend provides a CSRF endpoint
+            /*
+            async function getCsrfToken() {
+                try {
+                    const response = await fetch('/api/auth/csrf-token');
+                    const data = await response.json();
+                    if (data.csrf_token) {
+                        document.getElementById('csrf_token').value = data.csrf_token;
+                    }
+                } catch (error) {
+                    console.error('Failed to get CSRF token:', error);
+                }
+            }
+            getCsrfToken();
+            */
+        })();
+    </script>
+</body>
+</html>

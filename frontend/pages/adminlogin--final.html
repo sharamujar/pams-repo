@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PAMS</title>
+    <style>
+        body {
+            font-family: Nunito, sans-serif;
+            background-color: #F5F5F5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .error-message {
+            background-color: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            border-left: 4px solid #c33;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background-color: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            border-left: 4px solid #3c3;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #FFC107;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #FFC107;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            position: relative;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #FFB300;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        button.loading .spinner {
+            display: block;
+        }
+
+        button.loading .button-text {
+            visibility: hidden;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-footer .remember {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-footer input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .form-footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-left-timestamp {
+            position: fixed;
+            left: 12px;
+            bottom: 8px;
+            font-size: 13px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 6px 8px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            font-family: inherit;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h1>Login</h1>
+
+        <!-- Error/Success Messages -->
+        <div id="errorMessage" class="error-message" role="alert"></div>
+        <div id="successMessage" class="success-message" role="alert"></div>
+
+        <!-- FORM START -->
+        <form id="loginForm" action="/api/auth/login" method="POST">
+            
+            <!-- CSRF Token (Backend will populate this) -->
+            <input type="hidden" name="csrf_token" id="csrf_token" value="">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+
+            <div class="form-footer">
+                <label class="remember">
+                    <input type="checkbox" id="remember" name="remember" value="1">
+                    Remember me
+                </label>
+                <a href="/auth/reset-password" class="reset-password">Reset password?</a>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span class="button-text">Login</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+        <!-- FORM END -->
+
+        <div class="register-link">
+            Don't have an account? <a href="/auth/register">Create one</a>
+        </div>
+    </div>
+
+    <!-- CLOCK -->
+    <div id="timestamp" class="bottom-left-timestamp" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        // Clock functionality
+        (function () {
+            const el = document.getElementById('timestamp');
+
+            function pad(n) { return n < 10 ? '0' + n : n }
+
+            function format(d) {
+                return (
+                    pad(d.getDate()) + '-' +
+                    pad(d.getMonth() + 1) + '-' +
+                    d.getFullYear() + ' ' +
+                    pad(d.getHours()) + ':' +
+                    pad(d.getMinutes()) + ':' +
+                    pad(d.getSeconds())
+                );
+            }
+
+            function tick() {
+                if (el) el.textContent = format(new Date());
+            }
+
+            tick();
+            setInterval(tick, 1000);
+        })();
+
+        // Form handling with AJAX
+        (function() {
+            const form = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+
+            // Hide messages
+            function hideMessages() {
+                errorMsg.classList.remove('show');
+                successMsg.classList.remove('show');
+            }
+
+            // Show error message
+            function showError(message) {
+                hideMessages();
+                errorMsg.textContent = message;
+                errorMsg.classList.add('show');
+            }
+
+            // Show success message
+            function showSuccess(message) {
+                hideMessages();
+                successMsg.textContent = message;
+                successMsg.classList.add('show');
+            }
+
+            // Handle form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideMessages();
+
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+
+                // Get form data
+                const formData = new FormData(form);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                try {
+                    // Send login request
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // Success - show message and redirect
+                        showSuccess(result.message || 'Login successful! Redirecting...');
+                        
+                        setTimeout(() => {
+                            window.location.href = result.redirect || '/dashboard';
+                        }, 1000);
+                    } else {
+                        // Error from server
+                        showError(result.message || 'Login failed. Please check your credentials.');
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('loading');
+                    }
+                } catch (error) {
+                    // Network or other error
+                    showError('Connection error. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }
+            });
+
+            // Optional: Get CSRF token from backend on page load
+            // Uncomment if your backend provides a CSRF endpoint
+            /*
+            async function getCsrfToken() {
+                try {
+                    const response = await fetch('/api/auth/csrf-token');
+                    const data = await response.json();
+                    if (data.csrf_token) {
+                        document.getElementById('csrf_token').value = data.csrf_token;
+                    }
+                } catch (error) {
+                    console.error('Failed to get CSRF token:', error);
+                }
+            }
+            getCsrfToken();
+            */
+        })();
+    </script>
+
+</body>
+
+</html>

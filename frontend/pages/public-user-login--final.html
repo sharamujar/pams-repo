@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - PAMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Nunito, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .login-side {
+            flex: 1;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 36px;
+            max-width: 420px;
+            overflow-y: auto;
+        }
+
+        .image-side {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(10, 21, 81, 0.95) 0%, rgba(30, 58, 138, 0.85) 100%),
+                        url('https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1200');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0a1551;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo::before {
+            content: "🏛️";
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #0a1551;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        /* Error/Success Messages */
+        .error-message {
+            background-color: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 13px;
+            border-left: 4px solid #c33;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background-color: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 13px;
+            border-left: 4px solid #3c3;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        input.error {
+            border-color: #c33;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .reset-link {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .reset-link:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #0a1551;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            background-color: #1e3a8a;
+        }
+
+        .login-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .login-btn .spinner {
+            display: none;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-btn.loading .spinner {
+            display: block;
+        }
+
+        .login-btn.loading .button-text {
+            visibility: hidden;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .register-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            font-size: 11px;
+            color: #333;
+            background: rgba(255,255,255,0.9);
+            padding: 6px 8px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            z-index: 9999;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 30px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #FFC107;
+        }
+
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .image-side {
+                display: none;
+            }
+
+            .login-side {
+                max-width: 100%;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- LOGIN SIDE -->
+        <div class="login-side">
+            <div class="logo">PAMS LOGO</div>
+
+            <h1>Log In</h1>
+            <p class="subtitle">Login to your account.</p>
+
+            <!-- Error/Success Messages -->
+            <div id="errorMessage" class="error-message" role="alert"></div>
+            <div id="successMessage" class="success-message" role="alert"></div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" action="/api/auth/login" method="POST">
+                
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" id="csrf_token" value="">
+
+                <div class="form-group">
+                    <label for="email">E-mail Address</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Enter your password">
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe" name="remember" value="1">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="/auth/reset-password" class="reset-link">Reset Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginButton">
+                    <span class="button-text">Log In</span>
+                    <span class="spinner"></span>
+                </button>
+            </form>
+
+            <p class="register-text">
+                Don't have an account yet? <a href="/auth/register" class="register-link">Register with PAMS today.</a>
+            </p>
+
+            <div class="footer" id="timestamp"></div>
+        </div>
+
+        <!-- IMAGE SIDE -->
+        <div class="image-side">
+            <div class="carousel-dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = '/api'; // Change this to match your backend URL
+
+        // Form handling
+        (function() {
+            const form = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('loginButton');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+
+            // Hide messages
+            function hideMessages() {
+                errorMsg.classList.remove('show');
+                successMsg.classList.remove('show');
+                
+                // Clear input errors
+                document.querySelectorAll('input').forEach(el => {
+                    el.classList.remove('error');
+                });
+            }
+
+            // Show error message
+            function showError(message) {
+                hideMessages();
+                errorMsg.textContent = message;
+                errorMsg.classList.add('show');
+                
+                // Highlight input fields
+                document.getElementById('email').classList.add('error');
+                document.getElementById('password').classList.add('error');
+            }
+
+            // Show success message
+            function showSuccess(message) {
+                hideMessages();
+                successMsg.textContent = message;
+                successMsg.classList.add('show');
+            }
+
+            // Handle form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideMessages();
+
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.classList.add('loading');
+
+                // Get form data
+                const formData = new FormData(form);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                try {
+                    // Send login request
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        credentials: 'include', // Include cookies
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // Success - show message and redirect
+                        showSuccess(result.message || 'Login successful! Redirecting...');
+                        
+                        // Store token if provided (for JWT-based auth)
+                        if (result.token) {
+                            sessionStorage.setItem('token', result.token);
+                            
+                            // If remember me is checked, also store in localStorage
+                            if (data.remember) {
+                                localStorage.setItem('token', result.token);
+                            }
+                        }
+
+                        // Redirect based on role or default
+                        setTimeout(() => {
+                            if (result.role === 'admin') {
+                                window.location.href = result.redirect || '/admin/dashboard';
+                            } else {
+                                window.location.href = result.redirect || '/dashboard';
+                            }
+                        }, 1000);
+                    } else {
+                        // Error from server
+                        showError(result.message || 'Login failed. Please check your credentials.');
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('loading');
+                    }
+                } catch (error) {
+                    // Network or other error
+                    console.error('Login error:', error);
+                    showError('Connection error. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }
+            });
+
+            // Optional: Get CSRF token from backend on page load
+            // Uncomment if your backend provides a CSRF endpoint
+            /*
+            async function getCsrfToken() {
+                try {
+                    const response = await fetch('/api/auth/csrf-token');
+                    const data = await response.json();
+                    if (data.csrf_token) {
+                        document.getElementById('csrf_token').value = data.csrf_token;
+                    }
+                } catch (error) {
+                    console.error('Failed to get CSRF token:', error);
+                }
+            }
+            getCsrfToken();
+            */
+
+            // Check if user is already logged in (optional)
+            const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+            if (token) {
+                // Optionally verify token with backend
+                // If valid, redirect to dashboard
+                // For now, just show a message
+                console.log('User may already be logged in');
+            }
+        })();
+
+        // Timestamp clock
+        (function(){
+            const el = document.getElementById('timestamp');
+            function pad(n){ return n < 10 ? '0' + n : n }
+            function format(d){
+                return pad(d.getDate()) + '-' + pad(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' +
+                    pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+            }
+            function tick(){ 
+                if (el) el.textContent = format(new Date()); 
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+
+        // Simple carousel animation for dots
+        (function() {
+            const dots = document.querySelectorAll('.dot');
+            let currentDot = 0;
+
+            function rotateDots() {
+                dots[currentDot].classList.remove('active');
+                currentDot = (currentDot + 1) % dots.length;
+                dots[currentDot].classList.add('active');
+            }
+
+            setInterval(rotateDots, 3000);
+        })();
+    </script>
+
+</body>
+</html>
