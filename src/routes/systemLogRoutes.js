@@ -6,6 +6,7 @@ import {
     deleteSystemLog, 
     updateSystemLog 
 } from '../controllers/systemLogController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of system logs.
  */
-router.get('/', getAllSystemLogs);
+router.get('/', verifyToken, getAllSystemLogs);
 
 /**
  * @openapi
@@ -28,7 +29,7 @@ router.get('/', getAllSystemLogs);
  *     description: Retrieve a system log by ID.
  *     tags: [System Logs]
  */
-router.get('/:id', getSystemLogById);
+router.get('/:id', verifyToken, getSystemLogById);
 
 /**
  * @openapi
@@ -40,7 +41,7 @@ router.get('/:id', getSystemLogById);
  *       201:
  *         description: System log created successfully.
  */
-router.post('/', createSystemLog);
+router.post('/', verifyToken, createSystemLog);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post('/', createSystemLog);
  *       200:
  *         description: System log deleted successfully.
  */
-router.delete('/:id', deleteSystemLog);
+router.delete('/:id', verifyToken, deleteSystemLog);
 
 /**
  * @openapi
@@ -64,6 +65,6 @@ router.delete('/:id', deleteSystemLog);
  *       200:
  *         description: System log updated successfully.
  */
-router.put('/:id', updateSystemLog);
+router.put('/:id', verifyToken, updateSystemLog);
 
 export default router;

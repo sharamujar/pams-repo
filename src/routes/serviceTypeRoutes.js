@@ -6,6 +6,7 @@ import {
     deleteServiceType, 
     updateServiceType 
 } from '../controllers/serviceTypeController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of service types.
  */
-router.get('/', getAllServiceTypes);
+router.get('/', verifyToken, getAllServiceTypes);
 
 /**
  * @openapi
@@ -28,7 +29,7 @@ router.get('/', getAllServiceTypes);
  *     description: Retrieve a service type by ID.
  *     tags: [Service Types]
  */
-router.get('/:id', getServiceTypeById);
+router.get('/:id', verifyToken, getServiceTypeById);
 
 /**
  * @openapi
@@ -40,7 +41,7 @@ router.get('/:id', getServiceTypeById);
  *       201:
  *         description: Service type created successfully.
  */
-router.post('/', createServiceType);
+router.post('/', verifyToken, createServiceType);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post('/', createServiceType);
  *       200:
  *         description: Service type deleted successfully.
  */
-router.delete('/:id', deleteServiceType);
+router.delete('/:id', verifyToken, deleteServiceType);
 
 /**
  * @openapi
@@ -64,6 +65,6 @@ router.delete('/:id', deleteServiceType);
  *       200:
  *         description: Service type updated successfully.
  */
-router.put('/:id', updateServiceType);
+router.put('/:id', verifyToken, updateServiceType);
 
 export default router;

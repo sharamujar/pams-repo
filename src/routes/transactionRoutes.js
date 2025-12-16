@@ -6,6 +6,7 @@ import {
     deleteTransaction, 
     updateTransaction 
 } from '../controllers/transactionController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of transactions.
  */
-router.get('/', getAllTransactions);
+router.get('/', verifyToken, getAllTransactions);
 
 /**
  * @openapi
@@ -28,7 +29,7 @@ router.get('/', getAllTransactions);
  *     description: Retrieve a transaction by ID.
  *     tags: [Transactions]
  */
-router.get('/:id', getTransactionById);
+router.get('/:id', verifyToken, getTransactionById);
 
 /**
  * @openapi
@@ -40,7 +41,7 @@ router.get('/:id', getTransactionById);
  *       201:
  *         description: Transaction created successfully.
  */
-router.post('/', createTransaction);
+router.post('/', verifyToken, createTransaction);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post('/', createTransaction);
  *       200:
  *         description: Transaction deleted successfully.
  */
-router.delete('/:id', deleteTransaction);
+router.delete('/:id', verifyToken, deleteTransaction);
 
 /**
  * @openapi
@@ -64,6 +65,6 @@ router.delete('/:id', deleteTransaction);
  *       200:
  *         description: Transaction updated successfully.
  */
-router.put('/:id', updateTransaction);
+router.put('/:id', verifyToken, updateTransaction);
 
 export default router;

@@ -6,6 +6,7 @@ import {
     updateAnnouncement,
     deleteAnnouncement 
 } from '../controllers/announcementController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of announcements.
  */
-router.get('/', getAllAnnouncements);
+router.get('/', verifyToken, getAllAnnouncements);
 
 /**
  * @openapi
@@ -35,7 +36,7 @@ router.get('/', getAllAnnouncements);
  *       200:
  *         description: Announcement fetched successfully.
  */
-router.get('/:id', getAnnouncementById);
+router.get('/:id', verifyToken, getAnnouncementById);
 
 /**
  * @openapi
@@ -47,7 +48,7 @@ router.get('/:id', getAnnouncementById);
  *       201:
  *         description: Announcement created successfully.
  */
-router.post('/', createAnnouncement);
+router.post('/', verifyToken, createAnnouncement);
 
 /**
  * @openapi
@@ -63,7 +64,7 @@ router.post('/', createAnnouncement);
  *       200:
  *         description: Announcement updated successfully.
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
     await updateAnnouncement(req.params.id, req.body);
     return res.status(200).json({ message: 'Announcement updated successfully' });
 });
@@ -82,6 +83,6 @@ router.put('/:id', async (req, res) => {
  *       200:
  *         description: Announcement deleted successfully.
  */
-router.delete('/:id', deleteAnnouncement);
+router.delete('/:id', verifyToken, deleteAnnouncement);
 
 export default router;

@@ -6,6 +6,7 @@ import {
     deleteArchive, 
     updateArchive 
 } from '../controllers/yearlyArchiveController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of yearly archive records.
  */
-router.get('/', getAllArchives);
+router.get('/', verifyToken, getAllArchives);
 
 /**
  * @openapi
@@ -28,7 +29,7 @@ router.get('/', getAllArchives);
  *     description: Retrieve a single yearly archive record by ID.
  *     tags: [Yearly Archive]
  */
-router.get('/:id', getArchiveById);
+router.get('/:id', verifyToken, getArchiveById);
 
 /**
  * @openapi
@@ -40,7 +41,7 @@ router.get('/:id', getArchiveById);
  *       201:
  *         description: Record created successfully.
  */
-router.post('/', createArchive);
+router.post('/', verifyToken, createArchive);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post('/', createArchive);
  *       200:
  *         description: Record deleted successfully.
  */
-router.delete('/:id', deleteArchive);
+router.delete('/:id', verifyToken, deleteArchive);
 
 /**
  * @openapi
@@ -64,6 +65,6 @@ router.delete('/:id', deleteArchive);
  *       200:
  *         description: Record updated successfully.
  */
-router.put('/:id', updateArchive);
+router.put('/:id', verifyToken, updateArchive);
 
 export default router;

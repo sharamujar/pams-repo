@@ -1,5 +1,6 @@
 import { Router } from 'express'; 
 import { getAllPersons, createPerson, getPersonById, deletePerson, updatePersonRecord } from '../controllers/personController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -13,7 +14,7 @@ const router = Router();
  *       200:
  *         description: A list of persons.
  */
-router.get('/', getAllPersons);
+router.get('/', verifyToken, getAllPersons);
 
 /**
  * @openapi
@@ -22,7 +23,7 @@ router.get('/', getAllPersons);
  *     description: Retrieve a person by ID.
  *     tags: [Persons]
  */
-router.get('/:id', getPersonById);
+router.get('/:id', verifyToken, getPersonById);
 
 /**
  * @openapi
@@ -34,7 +35,7 @@ router.get('/:id', getPersonById);
  *       201:
  *         description: Person created successfully.
  */
-router.post('/', createPerson);
+router.post('/', verifyToken, createPerson);
 
 /**
  * @openapi
@@ -46,7 +47,7 @@ router.post('/', createPerson);
  *       200:
  *         description: Person deleted successfully.
  */
-router.delete('/:id', deletePerson);
+router.delete('/:id', verifyToken, deletePerson);
 
 /**
  * @openapi
@@ -58,6 +59,6 @@ router.delete('/:id', deletePerson);
  *       200:
  *         description: Person updated successfully.
  */
-router.put('/:id', updatePersonRecord);
+router.put('/:id', verifyToken, updatePersonRecord);
 
 export default router;

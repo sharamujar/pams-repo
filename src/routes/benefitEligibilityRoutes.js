@@ -6,6 +6,7 @@ import {
     deleteBenefitEligibility, 
     updateBenefitEligibility 
 } from '../controllers/benefitEligibilityController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of benefit eligibility records.
  */
-router.get('/', getAllBenefitEligibility);
+router.get('/', verifyToken, getAllBenefitEligibility);
 
 /**
  * @openapi
@@ -28,7 +29,7 @@ router.get('/', getAllBenefitEligibility);
  *     description: Retrieve a benefit eligibility record by ID.
  *     tags: [Benefit Eligibility]
  */
-router.get('/:id', getBenefitEligibilityById);
+router.get('/:id', verifyToken, getBenefitEligibilityById);
 
 /**
  * @openapi
@@ -40,7 +41,7 @@ router.get('/:id', getBenefitEligibilityById);
  *       201:
  *         description: Record created successfully.
  */
-router.post('/', createBenefitEligibility);
+router.post('/', verifyToken, createBenefitEligibility);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post('/', createBenefitEligibility);
  *       200:
  *         description: Record deleted successfully.
  */
-router.delete('/:id', deleteBenefitEligibility);
+router.delete('/:id', verifyToken, deleteBenefitEligibility);
 
 /**
  * @openapi
@@ -64,6 +65,6 @@ router.delete('/:id', deleteBenefitEligibility);
  *       200:
  *         description: Record updated successfully.
  */
-router.put('/:id', updateBenefitEligibility);
+router.put('/:id', verifyToken, updateBenefitEligibility);
 
 export default router;

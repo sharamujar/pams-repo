@@ -6,6 +6,7 @@ import {
     deleteAppointment,
     updateAppointment
 } from '../controllers/appointmentController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of appointments.
  */
-router.get('/', getAllAppointments);
+router.get('/', verifyToken, getAllAppointments);
 
 /**
  * @openapi
@@ -28,7 +29,7 @@ router.get('/', getAllAppointments);
  *     description: Retrieve an appointment by ID.
  *     tags: [Appointments]
  */
-router.get('/:id', getAppointmentById);
+router.get('/:id', verifyToken, getAppointmentById);
 
 /**
  * @openapi
@@ -40,7 +41,7 @@ router.get('/:id', getAppointmentById);
  *       201:
  *         description: Appointment created successfully.
  */
-router.post('/', createAppointment);
+router.post('/', verifyToken, createAppointment);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post('/', createAppointment);
  *       200:
  *         description: Appointment deleted successfully.
  */
-router.delete('/:id', deleteAppointment);
+router.delete('/:id', verifyToken, deleteAppointment);
 
 /**
  * @openapi
@@ -64,6 +65,6 @@ router.delete('/:id', deleteAppointment);
  *       200:
  *         description: Appointment updated successfully.
  */
-router.put('/:id', updateAppointment);
+router.put('/:id', verifyToken, updateAppointment);
 
 export default router;
