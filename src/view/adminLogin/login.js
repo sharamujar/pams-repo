@@ -57,16 +57,15 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify(data)
             });
 
             const result = await res.json();
 
-            if (res.ok && result.success) {
+            if (res.ok) {
                 showSuccess(result.message || 'Login successful!');
-                setTimeout(() => location.href = result.redirect || '/dashboard', 1000);
+                setTimeout(() => location.href = result.redirect || '/admindashboard/dashboard.html', 1000);
             } else {
                 showError(result.message || 'Invalid credentials.');
                 submitBtn.disabled = false;

@@ -11,6 +11,11 @@ import serviceTypeRoutes from './src/routes/serviceTypeRoutes.js';
 import systemLogRoutes from './src/routes/systemLogRoutes.js';
 import transactionRoutes from './src/routes/transactionRoutes.js';
 import yearlyArchiveRoutes from './src/routes/yearlyArchiveRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express()
 const port = 3000
@@ -26,6 +31,8 @@ app.use('/api/v1/service-types', serviceTypeRoutes);
 app.use('/api/v1/system-logs', systemLogRoutes);
 app.use('/api/v1/transactions', transactionRoutes);
 app.use("/api/v1/yearly-archive", yearlyArchiveRoutes);
+
+app.use(express.static(path.join(__dirname, 'src/view')));
 
 app.use(
   '/reference',
