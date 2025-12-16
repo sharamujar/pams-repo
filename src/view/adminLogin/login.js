@@ -73,7 +73,7 @@
                 submitBtn.classList.remove('loading');
             }
         } catch {
-            showError('Connection error. Please try again.');
+            showError('Invalid credentials. Please try again.');
             submitBtn.disabled = false;
             submitBtn.classList.remove('loading');
         }
