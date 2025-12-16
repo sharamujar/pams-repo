@@ -7,7 +7,7 @@
     <title>Admin Dashboard - PAMS</title>
 
     
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="dashboard.css">
 
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -61,12 +61,13 @@
         Settings
     </a>
 
-    <a href="#" class="logout-btn" id="logoutBtn">
+    <a class="logout-btn" id="logoutBtn">
         <span class="material-symbols-outlined">logout</span>
         Logout
     </a>
 
     <div class="sidebar-timestamp" id="sidebar-timestamp"></div>
+
 </div>
 
 
@@ -88,14 +89,13 @@
             <input type="text" placeholder="Search" />
         </div>
 
-        <button class="icon-btn notification">
-    <span class="material-symbols-outlined">notifications</span>
-    <span class="notif-dot" id="notifDot"></span>
-    
-</button>
+    <button class="icon-btn notification">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="notif-dot" id="notifDot"></span>
+    </button>
 
+    <img src="images/profile-cat.jpg" class="profile-pic" alt="Profile" />
 
-        <img src="images/profile-cat.jpg" class="profile-pic" alt="Profile" />
     </div>
 </div>
 
@@ -103,7 +103,6 @@
 <div class="welcome-card">
     <div>
         <h2>Hi, Admin!</h2>
-        <p class="welcome-meta">
             Logged in as: <span id="adminName">[Admin] [Role]</span><br />
             Last login: <span id="lastLogin">[date, time]</span>
         </p>
@@ -190,7 +189,20 @@
 
                 <div class="section-card">
                     <h2>Overview</h2>
-                    <div class="chart">
+
+                    <div class="overview-legend">
+            <span class="legend-item">
+                <span class="legend-dot completed"></span>
+                Completed Services
+            </span>
+            <span class="legend-item">
+                <span class="legend-dot ongoing"></span>
+                Ongoing Services
+            </span>
+        </div>
+
+                   <div class="chart">
+
                         <div class="bar blue" style="height:60%"></div>
                         <div class="bar yellow" style="height:80%"></div>
                         <div class="bar blue" style="height:50%"></div>
@@ -198,6 +210,7 @@
                         <div class="bar blue" style="height:65%"></div>
                         <div class="bar yellow" style="height:85%"></div>
                         <div class="bar blue" style="height:75%"></div>
+                        <div class="bar yellow" style="height:85%"></div>
                     </div>
                     <div class="days"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
                 </div>
@@ -207,6 +220,19 @@
 </div>
 
 
-<script src="js/dashboard.js"></script>
+<div class="modal-overlay" id="logoutModal">
+    <div class="modal">
+        <h3>Confirm Logout</h3>
+        <p>Are you sure you want to log out?</p>
+
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="cancelLogout">No</button>
+            <button class="btn btn-danger" id="confirmLogout">Yes</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="dashboard.js"></script>
 </body>
 </html>

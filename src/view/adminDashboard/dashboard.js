@@ -28,12 +28,17 @@ function loadUserInfo(){
   if(loginEl) loginEl.textContent = dashboardData.lastLogin;
 }
 
-function updateTimestamp(){
-  const el = document.getElementById('sidebar-timestamp');
-  if(!el) return;
-  const now = new Date();
-  el.textContent = now.toLocaleString();
-}
+(function(){
+            const el = document.getElementById('sidebar-timestamp');
+            function pad(n){ return n < 10 ? '0' + n : n }
+            function update(){
+                if(!el) return;
+                const d = new Date();
+                el.textContent = pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '-' + d.getFullYear() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+            }
+            update();
+            setInterval(update, 1000);
+        })();
 
 function setText(id, value){
   const el = document.getElementById(id);
@@ -63,13 +68,6 @@ fetch('/api/notifications')
   });
 
 
-
-document.getElementById('logoutBtn')?.addEventListener('click', () => {
-  if(confirm('Are you sure you want to logout?')){
-    window.location.href = '/logout';
-  }
-});
-
 const sidebarToggle = document.getElementById('sidebarToggle');
 
 if (sidebarToggle) {
@@ -77,5 +75,34 @@ if (sidebarToggle) {
     document.body.classList.toggle('sidebar-hidden');
   });
 }
+
+const logoutBtn = document.getElementById('logoutBtn');
+const logoutModal = document.getElementById('logoutModal');
+const cancelLogout = document.getElementById('cancelLogout');
+const confirmLogout = document.getElementById('confirmLogout');
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    logoutModal.style.display = 'flex';
+  });
+}
+
+if (cancelLogout) {
+  cancelLogout.addEventListener('click', () => {
+    logoutModal.style.display = 'none';
+  });
+}
+
+if (confirmLogout) {
+  confirmLogout.addEventListener('click', () => {
+    
+
+    window.location.href = '/logout'; 
+    
+  });
+}
+
+
 
 
