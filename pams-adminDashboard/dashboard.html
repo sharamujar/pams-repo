@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard - PAMS</title>
+
+    
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+
+
+<div class="sidebar">
+    <div class="logo">PAMS</div>
+
+    <a href="/dashboard" class="nav-item active">
+        <span class="material-symbols-outlined">dashboard</span>
+        Dashboard
+    </a>
+
+    <a href="/services" class="nav-item">
+        <span class="material-symbols-outlined">inventory_2</span>
+        Services
+    </a>
+
+    <a href="/applications" class="nav-item">
+        <span class="material-symbols-outlined">description</span>
+        Applications 
+    </a>
+
+    <a href="/announcements" class="nav-item">
+        <span class="material-symbols-outlined">campaign</span>
+        Announcements
+    </a>
+
+    <a href="/activity-logs" class="nav-item">
+        <span class="material-symbols-outlined">bar_chart</span>
+        Activity Logs
+    </a>
+
+    <a href="/appointments" class="nav-item">
+        <span class="material-symbols-outlined">event</span>
+        Appointments 
+    </a>
+
+    <a href="/history" class="nav-item">
+        <span class="material-symbols-outlined">folder</span>
+        History
+    </a>
+
+    <a href="/settings" class="nav-item">
+        <span class="material-symbols-outlined">settings</span>
+        Settings
+    </a>
+
+    <a href="#" class="logout-btn" id="logoutBtn">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+    </a>
+
+    <div class="sidebar-timestamp" id="sidebar-timestamp"></div>
+</div>
+
+
+<div class="main-content">
+
+    
+    
+<div class="overview-header">
+
+      <button class="icon-btn sidebar-toggle" id="sidebarToggle">
+        <span class="material-symbols-outlined">menu</span>
+    </button>
+
+    
+
+    <div class="overview-actions">
+        <div class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Search" />
+        </div>
+
+        <button class="icon-btn notification">
+    <span class="material-symbols-outlined">notifications</span>
+    <span class="notif-dot" id="notifDot"></span>
+    
+</button>
+
+
+        <img src="images/profile-cat.jpg" class="profile-pic" alt="Profile" />
+    </div>
+</div>
+
+
+<div class="welcome-card">
+    <div>
+        <h2>Hi, Admin!</h2>
+        <p class="welcome-meta">
+            Logged in as: <span id="adminName">[Admin] [Role]</span><br />
+            Last login: <span id="lastLogin">[date, time]</span>
+        </p>
+    </div>
+
+    
+</div>
+
+
+    <div class="content">
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div>
+                    <h3>Applications Today</h3>
+                    <div class="stat-number" id="applicationsToday">—</div>
+                </div>
+                <span class="material-symbols-outlined">assignment</span>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <h3>Active Services</h3>
+                    <div class="stat-number" id="activeServices">—</div>
+                </div>
+                <span class="material-symbols-outlined">inventory</span>
+            </div>
+
+            <div class="stat-card">
+                <div>
+                    <h3>Pending Approvals</h3>
+                    <div class="stat-number" id="pendingApprovals">—</div>
+                </div>
+                <span class="material-symbols-outlined">warning</span>
+            </div>
+        </div>
+
+        
+        <div class="two-columns">
+
+           
+            <div>
+                <div class="section-card">
+                    <h2>Service Management</h2>
+                    <div class="service-item">
+                        <div class="service-icon"><span class="material-symbols-outlined">accessible</span></div>
+                        <div><div class="value">Wheelchair Distribution</div><div class="label">Service Name</div></div>
+                        <div><div class="value">PWD Application</div><div class="label">Category</div></div>
+                        <div><div class="value">162 Applicants</div><div class="label">Applicants</div></div>
+                        <div><div class="status active">Active</div><div class="label">Status</div></div>
+                        <a class="link" href="#">View Details</a>
+                    </div>
+
+                    
+                </div>
+
+                <div class="section-card">
+                    <h2>Application Review</h2>
+                    <div class="app-item">
+                        <div class="profile-pic"><img src="images/doggo.jpg" class="profile-pic"></div>
+                        <div><div class="value">Juan A. Dela Cruz</div><div class="label">Applicant</div></div>
+                        <div><div class="value">Psychosocial</div><div class="label">Disability</div></div>
+                        <div><div class="value">Christmas Package</div><div class="label">Service</div></div>
+                        <div><div class="value">2025-12-03</div><div class="label">Date</div></div>
+                        <div class="actions">Actions <span class="material-symbols-outlined">expand_more</span></div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div>
+                <div class="section-card">
+                    <h2>Appointments</h2>
+                    <div class="appointment">
+                        <div class="icon"><span class="material-symbols-outlined">accessible</span></div>
+                        <div><div class="value">Thu, Dec 18 – J. Dela Cruz</div><div class="small">11:30 AM – 12:00 PM</div></div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h2>Activity Logs</h2>
+                    <div class="log">Admin John sent a scheduled appointment. <a class="link" href="#">View</a></div>
+                </div>
+
+                <div class="section-card">
+                    <h2>Overview</h2>
+                    <div class="chart">
+                        <div class="bar blue" style="height:60%"></div>
+                        <div class="bar yellow" style="height:80%"></div>
+                        <div class="bar blue" style="height:50%"></div>
+                        <div class="bar yellow" style="height:70%"></div>
+                        <div class="bar blue" style="height:65%"></div>
+                        <div class="bar yellow" style="height:85%"></div>
+                        <div class="bar blue" style="height:75%"></div>
+                    </div>
+                    <div class="days"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
