@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllUsers, createUser, getUserById, deleteUser, updateUser } from '../controllers/userController.js';
+import { loginUser, getAllUsers, createUser, getUserById, deleteUser, updateUser } from '../controllers/userController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
@@ -35,7 +35,7 @@ router.get('/:id', verifyToken, getUserById);
  *       201:
  *         description: User created successfully.
  */
-router.post('/', verifyToken, createUser);
+router.post('/', createUser);
 
 /**
  * @openapi
@@ -60,5 +60,17 @@ router.delete('/:id', verifyToken, deleteUser);
  *         description: User updated successfully.
  */
 router.put('/:id', verifyToken, updateUser);
+
+/**
+ * @openapi
+ * /api/v1/users/login:
+ *   post:
+ *     description: Login a user.
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: User logged in successfully.
+ */
+router.post('/login', loginUser);
 
 export default router;

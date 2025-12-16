@@ -15,6 +15,11 @@ export async function findById(id, callback) {
     return rows[0];
 }
 
+export async function findByUsername(username) {
+    const [rows] = await database.promise().query('SELECT * FROM users WHERE username = ?', [username]);
+    return rows[0];
+}
+
 export async function update(id, userData) {
     const [result] = await database.promise().query('UPDATE users SET ? WHERE id = ?', [userData, id]);
     return { id, ...userData };

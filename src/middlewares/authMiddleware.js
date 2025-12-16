@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { config } from 'dotenv';
 
 config();
@@ -13,7 +13,7 @@ export function verifyToken(req, res, next) {
 
   try {
     // Verify the token
-    const verified = verify(token.split(' ')[1], secretKey);
+    const verified = jwt.verify(token.split(' ')[1], secretKey);
     req.user = verified;
     next();
   } catch (err) {
