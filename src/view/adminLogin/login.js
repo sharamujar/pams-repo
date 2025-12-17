@@ -42,8 +42,6 @@
             const result = await res.json();
 
             if (res.ok) {
-                showSuccess(result.message || 'Login successful!');
-
                 setTimeout(() => {
                     window.location.replace(
                         result.redirect || '/admindashboard/dashboard.html');

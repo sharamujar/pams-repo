@@ -106,12 +106,13 @@ button:hover {
 }
 
 /* Messages */
-.error-message,
-.success-message {
+.error-message {
+    color: #e00000;
     text-align: center;
     margin-bottom: 15px;
-    font-size: 14px;
+    font-size: 15px;
 }
+
 
 /* Timestamp */
 .bottom-left-timestamp {
