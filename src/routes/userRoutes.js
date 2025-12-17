@@ -14,7 +14,7 @@ const router = Router();
  *       200:
  *         description: A list of users.
  */
-router.get('/', verifyToken, getAllUsers);
+router.get('/', getAllUsers);
 
 /**
  * @openapi
@@ -23,7 +23,7 @@ router.get('/', verifyToken, getAllUsers);
  *     description: Retrieve a list of all users.
  *     tags: [Users]
  */
-router.get('/:id', verifyToken, getUserById);
+router.get('/:id', getUserById);
 
 /**
  * @openapi
@@ -47,7 +47,7 @@ router.post('/', createUser);
  *       200:
  *         description: User deleted successfully.
  */
-router.delete('/:id', verifyToken, deleteUser);
+router.delete('/:id', deleteUser);
 
 /**
  * @openapi
@@ -59,7 +59,7 @@ router.delete('/:id', verifyToken, deleteUser);
  *       200:
  *         description: User updated successfully.
  */
-router.put('/:id', verifyToken, updateUser);
+router.put('/:id', updateUser);
 
 /**
  * @openapi
