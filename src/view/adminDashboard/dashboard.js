@@ -40,6 +40,15 @@ function loadUserInfo(){
             setInterval(update, 1000);
         })();
 
+        function updateTimestamp() {
+  const timestampEl = document.getElementById('currentTimestamp'); // Assuming an element with id 'currentTimestamp'
+  if (timestampEl) {
+    const now = new Date();
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    timestampEl.textContent = now.toLocaleDateString('en-US', options);
+  }
+}
+
 function setText(id, value){
   const el = document.getElementById(id);
   if(el) el.textContent = value;
@@ -59,13 +68,6 @@ function updateNotifications(count) {
 
 
 updateNotifications(0);   
-
-
-fetch('/api/notifications')
-  .then(res => res.json())
-  .then(data => {
-      updateNotifications(data.count);
-  });
 
 
 const sidebarToggle = document.getElementById('sidebarToggle');
@@ -98,8 +100,6 @@ if (confirmLogout) {
   confirmLogout.addEventListener('click', () => {
     localStorage.clear();
     sessionStorage.clear();
-
-
 
     window.location.replace('/adminlogin/login.html');
 
