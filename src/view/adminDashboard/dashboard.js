@@ -96,10 +96,14 @@ if (cancelLogout) {
 
 if (confirmLogout) {
   confirmLogout.addEventListener('click', () => {
-    
+    localStorage.clear();
+    sessionStorage.clear();
 
-    window.location.href = '/logout'; 
-    
+
+
+    window.location.replace('/adminlogin/login.html');
+
+
   });
 }
 
