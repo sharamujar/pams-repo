@@ -15,7 +15,9 @@ PAMS/
 │   ├── middleware/
 │   ├── models/
 │   ├── repositories/
-│   └── routes/
+│   ├── routes/
+    └── views/
+
 ├── app.js
 ├── .env
 ├── .gitignore
