@@ -13,6 +13,7 @@ import transactionRoutes from './src/routes/transactionRoutes.js';
 import yearlyArchiveRoutes from './src/routes/yearlyArchiveRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +22,7 @@ const app = express()
 const port = 3000
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/announcements", announcementRoutes);
