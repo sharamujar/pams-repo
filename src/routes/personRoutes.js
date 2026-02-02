@@ -1,6 +1,13 @@
-import { Router } from 'express'; 
-import { getAllPersons, createPerson, getPersonById, deletePerson, updatePersonRecord } from '../controllers/personController.js';
-import { verifyToken } from '../middlewares/authMiddleware.js';
+import { Router } from "express";
+import {
+  getAllPersons,
+  createPerson,
+  getPersonById,
+  deletePerson,
+  updatePersonRecord,
+  loginUser,
+} from "../controllers/personController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -14,7 +21,7 @@ const router = Router();
  *       200:
  *         description: A list of persons.
  */
-router.get('/', verifyToken, getAllPersons);
+router.get("/", verifyToken, getAllPersons);
 
 /**
  * @openapi
@@ -23,7 +30,7 @@ router.get('/', verifyToken, getAllPersons);
  *     description: Retrieve a person by ID.
  *     tags: [Persons]
  */
-router.get('/:id', verifyToken, getPersonById);
+router.get("/:id", verifyToken, getPersonById);
 
 /**
  * @openapi
@@ -35,7 +42,7 @@ router.get('/:id', verifyToken, getPersonById);
  *       201:
  *         description: Person created successfully.
  */
-router.post('/', verifyToken, createPerson);
+router.post("/", createPerson);
 
 /**
  * @openapi
@@ -47,7 +54,7 @@ router.post('/', verifyToken, createPerson);
  *       200:
  *         description: Person deleted successfully.
  */
-router.delete('/:id', verifyToken, deletePerson);
+router.delete("/:id", verifyToken, deletePerson);
 
 /**
  * @openapi
@@ -59,6 +66,18 @@ router.delete('/:id', verifyToken, deletePerson);
  *       200:
  *         description: Person updated successfully.
  */
-router.put('/:id', verifyToken, updatePersonRecord);
+router.put("/:id", verifyToken, updatePersonRecord);
+
+/**
+ * @openapi
+ * /api/v1/persons/login:
+ *   post:
+ *     description: Login a user.
+ *     tags: [Persons]
+ *     responses:
+ *       200:
+ *         description: User logged in successfully.
+ */
+router.post("/login", loginUser);
 
 export default router;

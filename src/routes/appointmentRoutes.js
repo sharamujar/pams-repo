@@ -1,12 +1,12 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
-    getAllAppointments,
-    createAppointment,
-    getAppointmentById,
-    deleteAppointment,
-    updateAppointment
-} from '../controllers/appointmentController.js';
-import { verifyToken } from '../middlewares/authMiddleware.js';
+  getAllAppointments,
+  createAppointment,
+  getAppointmentById,
+  deleteAppointment,
+  updateAppointment,
+} from "../controllers/appointmentController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -20,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of appointments.
  */
-router.get('/', verifyToken, getAllAppointments);
+router.get("/", getAllAppointments);
 
 /**
  * @openapi
@@ -29,7 +29,7 @@ router.get('/', verifyToken, getAllAppointments);
  *     description: Retrieve an appointment by ID.
  *     tags: [Appointments]
  */
-router.get('/:id', verifyToken, getAppointmentById);
+router.get("/:id", getAppointmentById);
 
 /**
  * @openapi
@@ -41,7 +41,7 @@ router.get('/:id', verifyToken, getAppointmentById);
  *       201:
  *         description: Appointment created successfully.
  */
-router.post('/', verifyToken, createAppointment);
+router.post("/", createAppointment);
 
 /**
  * @openapi
@@ -53,7 +53,7 @@ router.post('/', verifyToken, createAppointment);
  *       200:
  *         description: Appointment deleted successfully.
  */
-router.delete('/:id', verifyToken, deleteAppointment);
+router.delete("/:id", deleteAppointment);
 
 /**
  * @openapi
@@ -65,6 +65,6 @@ router.delete('/:id', verifyToken, deleteAppointment);
  *       200:
  *         description: Appointment updated successfully.
  */
-router.put('/:id', verifyToken, updateAppointment);
+router.put("/:id", updateAppointment);
 
 export default router;

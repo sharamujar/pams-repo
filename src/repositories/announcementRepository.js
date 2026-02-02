@@ -1,42 +1,42 @@
-import database from '../config/database.js';
+import database from "../config/database.js";
 
 export async function findAll() {
-    const [rows] = await database.promise().query('SELECT * FROM announcements');
-    return rows;
+  const [rows] = await database
+    .promise()
+    .query(
+      "SELECT a.*,u.full_name FROM pams.announcements a join users u on a.posted_by=u.id"
+    );
+  return rows;
 }
 
 export async function create(announcementData) {
-    const [result] = await database.promise().query(
-        'INSERT INTO announcements SET ?',
-        announcementData
-    );
+  const [result] = await database
+    .promise()
+    .query("INSERT INTO announcements SET ?", announcementData);
 
-    return { id: result.insertId, ...announcementData };
+  return { id: result.insertId, ...announcementData };
 }
 
 export async function findById(id) {
-    const [rows] = await database.promise().query(
-        'SELECT * FROM announcements WHERE id = ?',
-        [id]
-    );
+  const [rows] = await database
+    .promise()
+    .query("SELECT * FROM announcements WHERE id = ?", [id]);
 
-    return rows[0];
+  return rows[0];
 }
 
 export async function update(id, announcementData) {
-    const [result] = await database.promise().query(
-        'UPDATE announcements SET ? WHERE id = ?',
-        [announcementData, id]
-    );
+  const [result] = await database
+    .promise()
+    .query("UPDATE announcements SET ? WHERE id = ?", [announcementData, id]);
 
-    return { id, ...announcementData };
+  return { id, ...announcementData };
 }
 
 export async function remove(id) {
-    const [result] = await database.promise().query(
-        'DELETE FROM announcements WHERE id = ?',
-        [id]
-    );
+  const [result] = await database
+    .promise()
+    .query("DELETE FROM announcements WHERE id = ?", [id]);
 
-    return result.affectedRows > 0;
+  return result.affectedRows > 0;
 }

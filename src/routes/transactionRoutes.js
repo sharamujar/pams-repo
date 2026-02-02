@@ -1,12 +1,13 @@
-import { Router } from 'express';
-import { 
-    getAllTransactions, 
-    createTransaction, 
-    getTransactionById, 
-    deleteTransaction, 
-    updateTransaction 
-} from '../controllers/transactionController.js';
-import { verifyToken } from '../middlewares/authMiddleware.js';
+import { Router } from "express";
+import {
+  getAllTransactions,
+  createTransaction,
+  getTransactionById,
+  deleteTransaction,
+  updateTransaction,
+  getAllMyTransactions,
+} from "../controllers/transactionController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -20,7 +21,19 @@ const router = Router();
  *       200:
  *         description: A list of transactions.
  */
-router.get('/', verifyToken, getAllTransactions);
+router.get("/", verifyToken, getAllTransactions);
+
+/**
+ * @openapi
+ * /api/v1/transactions/me:
+ *   get:
+ *     description: Retrieve a list of all transactions for the authenticated user.
+ *     tags: [Transactions]
+ *     responses:
+ *       200:
+ *         description: A list of transactions for the authenticated user.
+ */
+router.get("/me", verifyToken, getAllMyTransactions);
 
 /**
  * @openapi
@@ -29,7 +42,7 @@ router.get('/', verifyToken, getAllTransactions);
  *     description: Retrieve a transaction by ID.
  *     tags: [Transactions]
  */
-router.get('/:id', verifyToken, getTransactionById);
+router.get("/:id", verifyToken, getTransactionById);
 
 /**
  * @openapi
@@ -41,7 +54,7 @@ router.get('/:id', verifyToken, getTransactionById);
  *       201:
  *         description: Transaction created successfully.
  */
-router.post('/', verifyToken, createTransaction);
+router.post("/", verifyToken, createTransaction);
 
 /**
  * @openapi
@@ -53,7 +66,7 @@ router.post('/', verifyToken, createTransaction);
  *       200:
  *         description: Transaction deleted successfully.
  */
-router.delete('/:id', verifyToken, deleteTransaction);
+router.delete("/:id", verifyToken, deleteTransaction);
 
 /**
  * @openapi
@@ -65,6 +78,6 @@ router.delete('/:id', verifyToken, deleteTransaction);
  *       200:
  *         description: Transaction updated successfully.
  */
-router.put('/:id', verifyToken, updateTransaction);
+router.put("/:id", verifyToken, updateTransaction);
 
 export default router;

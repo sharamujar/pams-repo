@@ -1,6 +1,12 @@
-import { Router } from 'express';
-import { loginUser, getAllUsers, createUser, getUserById, deleteUser, updateUser } from '../controllers/userController.js';
-
+import { Router } from "express";
+import {
+  loginUser,
+  getAllUsers,
+  createUser,
+  getUserById,
+  deleteUser,
+  updateUser,
+} from "../controllers/userController.js";
 
 const router = Router();
 
@@ -14,7 +20,7 @@ const router = Router();
  *       200:
  *         description: A list of users.
  */
-router.get('/', getAllUsers);
+router.get("/", getAllUsers);
 
 /**
  * @openapi
@@ -23,8 +29,7 @@ router.get('/', getAllUsers);
  *     description: Retrieve a list of all users.
  *     tags: [Users]
  */
-router.get('/:id', getUserById);
-
+router.get("/:id", getUserById);
 /**
  * @openapi
  * /api/v1/users:
@@ -35,7 +40,7 @@ router.get('/:id', getUserById);
  *       201:
  *         description: User created successfully.
  */
-router.post('/', createUser);
+router.post("/", createUser);
 
 /**
  * @openapi
@@ -47,7 +52,7 @@ router.post('/', createUser);
  *       200:
  *         description: User deleted successfully.
  */
-router.delete('/:id', deleteUser);
+router.delete("/:id", deleteUser);
 
 /**
  * @openapi
@@ -59,7 +64,7 @@ router.delete('/:id', deleteUser);
  *       200:
  *         description: User updated successfully.
  */
-router.put('/:id', updateUser);
+router.put("/:id", updateUser);
 
 /**
  * @openapi
@@ -71,6 +76,6 @@ router.put('/:id', updateUser);
  *       200:
  *         description: User logged in successfully.
  */
-router.post('/login', loginUser);
+router.post("/login", loginUser);
 
 export default router;
