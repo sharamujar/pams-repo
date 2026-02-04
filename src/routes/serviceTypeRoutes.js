@@ -4,7 +4,8 @@ import {
     createServiceType, 
     getServiceTypeById, 
     deleteServiceType, 
-    updateServiceType 
+    updateServiceType,
+    updateServiceTypeStatus
 } from '../controllers/serviceTypeController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -66,5 +67,21 @@ router.delete('/:id', verifyToken, deleteServiceType);
  *         description: Service type updated successfully.
  */
 router.put('/:id', verifyToken, updateServiceType);
+
+/**
+ * @openapi
+ * /api/v1/service-types/{id}/status:
+ *   patch:
+ *     description: Update a service type status by ID.
+ *     tags: [Service Types]
+ *     responses:
+ *       200:
+ *         description: Service type status updated successfully.
+ *       400:
+ *         description: Status is required.
+ *       404:
+ *         description: Service type not found.
+ */
+router.patch('/:id/status', verifyToken, updateServiceTypeStatus);
 
 export default router;

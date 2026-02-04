@@ -30,3 +30,11 @@ export async function remove(id) {
     );
     return result.affectedRows > 0;
 }
+
+export async function updateStatus(id, active) {
+    const [result] = await database.promise().query(
+        'UPDATE service_types SET active = ? WHERE id = ?',
+        [active, id]
+    );
+    return result.affectedRows > 0;
+}

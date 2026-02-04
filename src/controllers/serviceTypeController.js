@@ -1,4 +1,4 @@
-import { findAll, create, findById, update, remove } from '../repositories/serviceTypeRepository.js';
+import { findAll, create, findById, update, remove, updateStatus } from '../repositories/serviceTypeRepository.js';
 
 export async function getAllServiceTypes(req, res) {
     const allServiceTypes = await findAll();
@@ -42,4 +42,21 @@ export async function updateServiceType(req, res) {
 export async function deleteServiceType(req, res) {
     await remove(req.params.id);
     res.status(200).json({ message: "Service Type deleted" });
+}
+
+export async function updateServiceTypeStatus(req, res) {
+    const id = req.params.id;
+    const { status } = req.body;
+
+    if (status === undefined || status === null) {
+        return res.status(400).json({ error: "Active is required" });
+    }
+
+    const updated = await updateStatus(id, status);
+    
+    if (!updated) {
+        return res.status(404).json({ error: "Service Type not found" });
+    }
+
+    res.status(200).json({ message: "Service Type status updated" });
 }
