@@ -4,7 +4,8 @@ import {
     getAnnouncementById,
     createAnnouncement,
     updateAnnouncement,
-    deleteAnnouncement 
+    deleteAnnouncement,
+    updateAnnouncementStatus
 } from '../controllers/announcementController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -68,6 +69,26 @@ router.put('/:id', verifyToken, async (req, res) => {
     await updateAnnouncement(req.params.id, req.body);
     return res.status(200).json({ message: 'Announcement updated successfully' });
 });
+
+/**
+ * @openapi
+ * /api/v1/announcements/{id}/status:
+ *   patch:
+ *     description: Update an announcement status by ID.
+ *     tags: [Announcements]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Announcement status updated successfully.
+ *       400:
+ *         description: Status is required.
+ *       404:
+ *         description: Announcement not found.
+ */
+router.patch('/:id/status', verifyToken, updateAnnouncementStatus);
 
 /**
  * @openapi
