@@ -5,6 +5,7 @@ import {
   update,
   remove,
   updateStatus,
+  findByStatus,
 } from "../repositories/announcementRepository.js";
 
 export async function getAllAnnouncements(req, res) {
@@ -63,4 +64,15 @@ export async function updateAnnouncementStatus(req, res) {
   }
 
   return res.status(200).json({ message: "Announcement status updated successfully" });
+}
+
+export async function getAnnouncementsByStatus(req, res) {
+  const { status } = req.query;
+
+  if (!status) {
+    return res.status(400).json({ error: "Status query parameter is required" });
+  }
+
+  const announcements = await findByStatus(status);
+  return res.status(200).json(announcements);
 }

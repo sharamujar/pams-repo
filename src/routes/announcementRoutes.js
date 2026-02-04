@@ -5,7 +5,8 @@ import {
     createAnnouncement,
     updateAnnouncement,
     deleteAnnouncement,
-    updateAnnouncementStatus
+    updateAnnouncementStatus,
+    getAnnouncementsByStatus
 } from '../controllers/announcementController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 
@@ -15,13 +16,25 @@ const router = Router();
  * @openapi
  * /api/v1/announcements:
  *   get:
- *     description: Retrieve all announcements.
+ *     description: Retrieve all announcements or filter by status.
  *     tags: [Announcements]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Filter announcements by status
  *     responses:
  *       200:
  *         description: A list of announcements.
  */
-router.get('/', verifyToken, getAllAnnouncements);
+router.get('/', verifyToken, (req, res) => {
+  if (req.query.status) {
+    return getAnnouncementsByStatus(req, res);
+  }
+  return getAllAnnouncements(req, res);
+});
 
 /**
  * @openapi

@@ -48,3 +48,13 @@ export async function updateStatus(id, status) {
 
   return result.affectedRows > 0;
 }
+
+export async function findByStatus(status) {
+  const [rows] = await database
+    .promise()
+    .query(
+      "SELECT a.*,u.full_name FROM pams.announcements a join users u on a.posted_by=u.id WHERE a.status = ?",
+      [status]
+    );
+  return rows;
+}
