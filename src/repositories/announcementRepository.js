@@ -40,3 +40,11 @@ export async function remove(id) {
 
   return result.affectedRows > 0;
 }
+
+export async function updateStatus(id, status) {
+  const [result] = await database
+    .promise()
+    .query("UPDATE announcements SET status = ? WHERE id = ?", [status, id]);
+
+  return result.affectedRows > 0;
+}

@@ -4,6 +4,7 @@ import {
   findById,
   update,
   remove,
+  updateStatus,
 } from "../repositories/announcementRepository.js";
 
 export async function getAllAnnouncements(req, res) {
@@ -45,4 +46,21 @@ export async function updateAnnouncement(id, announcementData) {
 export async function deleteAnnouncement(req, res) {
   await remove(req.params.id);
   return res.status(200).json({ message: "Announcement deleted successfully" });
+}
+
+export async function updateAnnouncementStatus(req, res) {
+  const id = req.params.id;
+  const { status } = req.body;
+
+  if (status === undefined || status === null) {
+    return res.status(400).json({ error: "Status is required" });
+  }
+
+  const updated = await updateStatus(id, status);
+
+  if (!updated) {
+    return res.status(404).json({ error: "Announcement not found" });
+  }
+
+  return res.status(200).json({ message: "Announcement status updated successfully" });
 }
