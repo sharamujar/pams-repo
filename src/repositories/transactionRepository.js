@@ -60,6 +60,14 @@ export async function update(id, transactionData) {
   return result.affectedRows > 0 ? { id, ...transactionData } : null;
 }
 
+export async function updateStatus(id, status) {
+  const [result] = await database
+    .promise()
+    .query("UPDATE transactions SET status = ? WHERE id = ?", [status, id]);
+
+  return result.affectedRows > 0 ? { id, status } : null;
+}
+
 export async function remove(id) {
   const [result] = await database
     .promise()

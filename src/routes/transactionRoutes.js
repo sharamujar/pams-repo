@@ -6,6 +6,7 @@ import {
   deleteTransaction,
   updateTransaction,
   getAllMyTransactions,
+  updateTransactionStatus,
 } from "../controllers/transactionController.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
 
@@ -79,5 +80,40 @@ router.delete("/:id", verifyToken, deleteTransaction);
  *         description: Transaction updated successfully.
  */
 router.put("/:id", verifyToken, updateTransaction);
+
+/**
+ * @openapi
+ * /api/v1/transactions/{id}/status:
+ *   patch:
+ *     description: Update transaction status by ID.
+ *     tags: [Transactions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Transaction ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: integer
+ *                 description: New status value
+ *     responses:
+ *       200:
+ *         description: Transaction status updated successfully.
+ *       400:
+ *         description: Invalid status value.
+ *       404:
+ *         description: Transaction not found.
+ */
+router.patch("/:id/status", verifyToken, updateTransactionStatus);
 
 export default router;

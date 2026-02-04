@@ -5,6 +5,7 @@ import {
   update,
   remove,
   findAllByPersonId,
+  updateStatus,
 } from "../repositories/transactionRepository.js";
 
 export async function getAllTransactions(req, res) {
@@ -96,6 +97,35 @@ export async function updateTransaction(req, res) {
   } catch (error) {
     console.error("Error updating transaction:", error);
     res.status(500).json({ error: "Failed to update transaction" });
+  }
+}
+
+export async function updateTransactionStatus(req, res) {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (status === undefined || status === null) {
+      return res.status(400).json({ error: "Status is required" });
+    }
+
+    const statusNumber = parseInt(status);
+    if (isNaN(statusNumber)) {
+      return res.status(400).json({ error: "Status must be a valid number" });
+    }
+
+    const result = await updateStatus(id, statusNumber);
+
+    if (!result) {
+      return res.status(404).json({ error: "Transaction not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Transaction status updated successfully", status: statusNumber });
+  } catch (error) {
+    console.error("Error updating transaction status:", error);
+    res.status(500).json({ error: "Failed to update transaction status" });
   }
 }
 
