@@ -19,7 +19,7 @@ export async function findAll(filter = {}) {
 
 export async function findAllByPersonId(personId, filter = {}) {
   let query =
-    "SELECT t.id, s.name, s.description, s.category, t.status \
+    "SELECT t.id, s.name, s.description, s.category, t.status, t.date_created \
                 FROM transactions t \
                 JOIN service_types s ON t.service_id = s.id \
                 WHERE t.person_id = ?";
