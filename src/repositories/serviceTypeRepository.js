@@ -7,6 +7,11 @@ export async function findAll(filter = {}) {
         query += ' WHERE active = ?';
         params.push(filter.status);
     }
+    query += ' ORDER BY date_created DESC';
+    if (filter.top !== undefined) {
+        query += ' LIMIT ?';
+        params.push(filter.top);
+    }
     const [rows] = await database.promise().query(query, params);
     return rows;
 }

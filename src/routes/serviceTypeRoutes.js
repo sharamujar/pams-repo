@@ -15,7 +15,7 @@ const router = Router();
  * @openapi
  * /api/v1/service-types:
  *   get:
- *     description: Retrieve a list of service types. Optional query status (e.g. 1 = pending/active) filters by active column.
+ *     description: Retrieve a list of service types. Optional query status (e.g. 1 = pending/active) filters by active column. Optional top limits results to the N most recent by date_created.
  *     tags: [Service Types]
  *     parameters:
  *       - in: query
@@ -23,6 +23,11 @@ const router = Router();
  *         schema:
  *           type: integer
  *         description: Filter by active (1 = pending).
+ *       - in: query
+ *         name: top
+ *         schema:
+ *           type: integer
+ *         description: Return only the top N results, sorted by date_created descending (newest first).
  *     responses:
  *       200:
  *         description: A list of service types.
