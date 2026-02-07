@@ -2,7 +2,7 @@ import database from "../config/database.js";
 
 export async function findAll(filter = {}) {
   let query =
-    "SELECT t.id, s.name, s.description, s.category, t.status, t.date_created, p.full_name as applicant_name \
+    "SELECT t.id, s.name, s.description, s.category, t.status, t.date_created, p.full_name as applicant_name, p.disability_type \
                 FROM transactions t \
                 JOIN service_types s ON t.service_id = s.id \
                 JOIN persons p ON t.person_id = p.id";
