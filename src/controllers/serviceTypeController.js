@@ -1,7 +1,9 @@
 import { findAll, create, findById, update, remove, updateStatus } from '../repositories/serviceTypeRepository.js';
 
 export async function getAllServiceTypes(req, res) {
-    const allServiceTypes = await findAll();
+    const { status } = req.query;
+    const filter = status !== undefined ? { status: Number(status) } : {};
+    const allServiceTypes = await findAll(filter);
     res.status(200).json(allServiceTypes);
 }
 

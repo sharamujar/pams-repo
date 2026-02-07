@@ -1,7 +1,13 @@
 import database from '../config/database.js';
 
-export async function findAll() {
-    const [rows] = await database.promise().query('SELECT * FROM service_types');
+export async function findAll(filter = {}) {
+    let query = 'SELECT * FROM service_types';
+    const params = [];
+    if (filter.status !== undefined) {
+        query += ' WHERE active = ?';
+        params.push(filter.status);
+    }
+    const [rows] = await database.promise().query(query, params);
     return rows;
 }
 

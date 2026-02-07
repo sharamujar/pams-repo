@@ -15,8 +15,14 @@ const router = Router();
  * @openapi
  * /api/v1/service-types:
  *   get:
- *     description: Retrieve a list of all service types.
+ *     description: Retrieve a list of service types. Optional query status (e.g. 1 = pending/active) filters by active column.
  *     tags: [Service Types]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: integer
+ *         description: Filter by active (1 = pending).
  *     responses:
  *       200:
  *         description: A list of service types.
