@@ -7,6 +7,7 @@ import {
   deleteUser,
   updateUser,
 } from "../controllers/userController.js";
+import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -20,7 +21,7 @@ const router = Router();
  *       200:
  *         description: A list of users.
  */
-router.get("/", getAllUsers);
+router.get("/", verifyToken, getAllUsers);
 
 /**
  * @openapi
@@ -29,7 +30,7 @@ router.get("/", getAllUsers);
  *     description: Retrieve a list of all users.
  *     tags: [Users]
  */
-router.get("/:id", getUserById);
+router.get("/:id", verifyToken, getUserById);
 /**
  * @openapi
  * /api/v1/users:
@@ -40,7 +41,7 @@ router.get("/:id", getUserById);
  *       201:
  *         description: User created successfully.
  */
-router.post("/", createUser);
+router.post("/", verifyToken, createUser);
 
 /**
  * @openapi
@@ -52,7 +53,7 @@ router.post("/", createUser);
  *       200:
  *         description: User deleted successfully.
  */
-router.delete("/:id", deleteUser);
+router.delete("/:id", verifyToken, deleteUser);
 
 /**
  * @openapi
@@ -64,7 +65,7 @@ router.delete("/:id", deleteUser);
  *       200:
  *         description: User updated successfully.
  */
-router.put("/:id", updateUser);
+router.put("/:id", verifyToken, updateUser);
 
 /**
  * @openapi
