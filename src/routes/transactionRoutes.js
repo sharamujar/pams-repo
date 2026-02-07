@@ -16,8 +16,19 @@ const router = Router();
  * @openapi
  * /api/v1/transactions:
  *   get:
- *     description: Retrieve a list of all transactions.
+ *     description: Retrieve a list of all transactions, sorted by date_created descending. Optional status and top query params.
  *     tags: [Transactions]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: integer
+ *         description: Filter by status.
+ *       - in: query
+ *         name: top
+ *         schema:
+ *           type: integer
+ *         description: Limit to top N results by date_created (most recent first).
  *     responses:
  *       200:
  *         description: A list of transactions.
@@ -28,8 +39,19 @@ router.get("/", verifyToken, getAllTransactions);
  * @openapi
  * /api/v1/transactions/me:
  *   get:
- *     description: Retrieve a list of all transactions for the authenticated user.
+ *     description: Retrieve transactions for the authenticated user, sorted by date_created descending. Optional status and top query params.
  *     tags: [Transactions]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: integer
+ *         description: Filter by status.
+ *       - in: query
+ *         name: top
+ *         schema:
+ *           type: integer
+ *         description: Limit to top N results by date_created (most recent first).
  *     responses:
  *       200:
  *         description: A list of transactions for the authenticated user.

@@ -10,14 +10,12 @@ import {
 
 export async function getAllTransactions(req, res) {
   try {
-    if (req.query.status) {
-      const status = parseInt(req.query.status);
-      const filteredTransactions = await findAll({ status: status });
-      return res.status(200).json(filteredTransactions);
-    }
+    const filter = {};
+    if (req.query.status !== undefined) filter.status = parseInt(req.query.status, 10);
+    if (req.query.top !== undefined) filter.top = parseInt(req.query.top, 10);
 
-    const allTransactions = await findAll();
-    res.status(200).json(allTransactions);
+    const transactions = await findAll(filter);
+    return res.status(200).json(transactions);
   } catch (error) {
     console.error("Error fetching transactions:", error);
     res.status(500).json({ error: "Failed to fetch transactions" });
@@ -26,16 +24,12 @@ export async function getAllTransactions(req, res) {
 
 export async function getAllMyTransactions(req, res) {
   try {
-    if (req.query.status) {
-      const status = parseInt(req.query.status);
-      const filteredTransactions = await findAllByPersonId(req.user.oid, {
-        status: status,
-      });
-      return res.status(200).json(filteredTransactions);
-    }
+    const filter = {};
+    if (req.query.status !== undefined) filter.status = parseInt(req.query.status, 10);
+    if (req.query.top !== undefined) filter.top = parseInt(req.query.top, 10);
 
-    const allTransactions = await findAllByPersonId(req.user.oid);
-    res.status(200).json(allTransactions);
+    const transactions = await findAllByPersonId(req.user.oid, filter);
+    return res.status(200).json(transactions);
   } catch (error) {
     console.error("Error fetching transactions:", error);
     res.status(500).json({ error: "Failed to fetch transactions" });
