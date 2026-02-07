@@ -4,7 +4,7 @@ import {
   findPersonById,
   updatePerson,
   removePerson,
-  findByUsername,
+  findByEmail,
 } from "../repositories/personRepository.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -12,9 +12,9 @@ import bcrypt from "bcryptjs";
 const secretKey = process.env.JWT_SECRET;
 
 export async function loginUser(req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const person = await findByUsername(username);
+  const person = await findByEmail(email);
   if (!person) return res.status(400).json({ message: "Invalid credentials" });
 
   const isPasswordValid = await bcrypt.compare(password, person.password_hash);
@@ -22,7 +22,7 @@ export async function loginUser(req, res) {
     return res.status(400).json({ message: "Invalid credentials" });
 
   const token = jwt.sign(
-    { username, oid: person.id, role: "member" },
+    { email, oid: person.id, role: "member" },
     secretKey,
     {
       expiresIn: "24h",
@@ -59,6 +59,9 @@ export async function createPerson(req, res) {
         "full_name, date_of_birth, gender, disability_type, address, contact_no, status, and date_registered are required fields",
     });
   }
+
+  newPerson.password_hash = await bcrypt.hash(newPerson.password, 10);
+  delete newPerson.password;
 
   await createPWD(newPerson);
   return res.status(201).json({ message: "Person created successfully" });

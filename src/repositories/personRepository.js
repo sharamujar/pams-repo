@@ -19,10 +19,10 @@ export async function findPersonById(id) {
   return rows[0];
 }
 
-export async function findByUsername(username) {
+export async function findByEmail(email) {
   const [rows] = await database
     .promise()
-    .query("SELECT * FROM persons WHERE username = ?", [username]);
+    .query("SELECT * FROM persons WHERE email = ?", [email]);
   return rows[0];
 }
 
