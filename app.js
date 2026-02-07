@@ -11,6 +11,7 @@ import serviceTypeRoutes from "./src/routes/serviceTypeRoutes.js";
 import systemLogRoutes from "./src/routes/systemLogRoutes.js";
 import transactionRoutes from "./src/routes/transactionRoutes.js";
 import yearlyArchiveRoutes from "./src/routes/yearlyArchiveRoutes.js";
+import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/v1/service-types", serviceTypeRoutes);
 app.use("/api/v1/system-logs", systemLogRoutes);
 app.use("/api/v1/transactions", transactionRoutes);
 app.use("/api/v1/yearly-archive", yearlyArchiveRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 
 app.use(
   "/reference",
