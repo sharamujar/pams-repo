@@ -1,9 +1,23 @@
-import { findAll, create, findById, update, remove } from '../repositories/appointmentRepository.js';
+import { findAll, create, findById, update, remove, findAllByUserId } from '../repositories/appointmentRepository.js';
 
 export async function getAllAppointments(req, res) {
     try {
         const allAppointments = await findAll();
         return res.status(200).json(allAppointments);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Failed to fetch appointments" });
+    }
+}
+
+export async function getMyAppointments(req, res) {
+    try {
+        const userId = req.user?.oid;
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized: user not identified" });
+        }
+        const appointments = await findAllByUserId(userId);
+        return res.status(200).json(appointments);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Failed to fetch appointments" });

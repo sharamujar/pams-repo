@@ -33,7 +33,8 @@ export async function loginUser(req, res) {
 }
 
 export async function getAllPersons(req, res) {
-  var allPersons = await findAllPersons();
+  const { status } = req.query;
+  var allPersons = await findAllPersons(status);
   res.status(200).json(allPersons);
 }
 

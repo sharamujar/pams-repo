@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getAllAppointments,
+  getMyAppointments,
   createAppointment,
   getAppointmentById,
   deleteAppointment,
@@ -21,6 +22,22 @@ const router = Router();
  *         description: A list of appointments.
  */
 router.get("/", getAllAppointments);
+
+/**
+ * @openapi
+ * /api/v1/appointments/me:
+ *   get:
+ *     description: Retrieve appointments for the authenticated user (user_id from JWT oid).
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of appointments for the current user.
+ *       401:
+ *         description: Unauthorized.
+ */
+router.get("/me", verifyToken, getMyAppointments);
 
 /**
  * @openapi

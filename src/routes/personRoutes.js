@@ -15,8 +15,14 @@ const router = Router();
  * @openapi
  * /api/v1/persons:
  *   get:
- *     description: Retrieve a list of all persons.
+ *     description: Retrieve a list of all persons. Optionally filter by status.
  *     tags: [Persons]
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Filter persons by status
  *     responses:
  *       200:
  *         description: A list of persons.

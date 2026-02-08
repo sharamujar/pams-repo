@@ -1,7 +1,11 @@
 import database from "../config/database.js";
 
-export async function findAllPersons() {
-  const [rows] = await database.promise().query("SELECT * FROM persons");
+export async function findAllPersons(status) {
+  const query = status
+    ? "SELECT * FROM persons WHERE status = ?"
+    : "SELECT * FROM persons";
+  const params = status ? [status] : [];
+  const [rows] = await database.promise().query(query, params);
   return rows;
 }
 
