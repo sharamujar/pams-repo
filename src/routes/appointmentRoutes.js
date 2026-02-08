@@ -27,10 +27,17 @@ router.get("/", getAllAppointments);
  * @openapi
  * /api/v1/appointments/me:
  *   get:
- *     description: Retrieve appointments for the authenticated user (user_id from JWT oid).
+ *     description: Retrieve appointments for the authenticated user (user_id from JWT oid), ordered by preferred_date descending. Optional top limits the number of results.
  *     tags: [Appointments]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: top
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Maximum number of appointments to return (ordered by preferred_date descending).
  *     responses:
  *       200:
  *         description: A list of appointments for the current user.

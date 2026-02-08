@@ -16,7 +16,8 @@ export async function getMyAppointments(req, res) {
         if (!userId) {
             return res.status(401).json({ error: "Unauthorized: user not identified" });
         }
-        const appointments = await findAllByUserId(userId);
+        const top = req.query.top != null ? parseInt(req.query.top, 10) : null;
+        const appointments = await findAllByUserId(userId, Number.isNaN(top) ? null : top);
         return res.status(200).json(appointments);
     } catch (error) {
         console.error(error);

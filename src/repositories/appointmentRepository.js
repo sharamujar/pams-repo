@@ -7,18 +7,21 @@ export async function findAll() {
     return rows;
 }
 
-export async function findAllByUserId(userId) {
-    const [rows] = await database
-        .promise()
-        .query(
-            `SELECT a.*, p.full_name AS person_name, p.contact_no AS person_contact,
+export async function findAllByUserId(userId, top = null) {
+    let sql = `SELECT a.*, p.full_name AS person_name, p.contact_no AS person_contact,
                     s.name AS service_name, s.description AS service_description, s.category AS service_category
              FROM appointments a
              JOIN persons p ON a.person_id = p.id
              JOIN service_types s ON a.service_id = s.id
-             WHERE a.user_id = ?`,
-            [userId]
-        );
+             WHERE a.user_id = ?
+             ORDER BY a.preferred_date DESC`;
+    const params = [userId];
+    const limit = top != null && Number.isInteger(top) && top > 0 ? Math.min(top, 1000) : null;
+    if (limit != null) {
+        sql += ' LIMIT ?';
+        params.push(limit);
+    }
+    const [rows] = await database.promise().query(sql, params);
     return rows;
 }
 
