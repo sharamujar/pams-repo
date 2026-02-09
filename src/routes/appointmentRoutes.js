@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getAllAppointments,
   getMyAppointments,
+  getMyPersonAppointments,
   createAppointment,
   getAppointmentById,
   deleteAppointment,
@@ -45,6 +46,29 @@ router.get("/", getAllAppointments);
  *         description: Unauthorized.
  */
 router.get("/me", verifyToken, getMyAppointments);
+
+/**
+ * @openapi
+ * /api/v1/appointments/persons/me:
+ *   get:
+ *     description: Retrieve appointments for the authenticated person (person_id from JWT oid), ordered by preferred_date descending. Optional top limits the number of results.
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: top
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Maximum number of appointments to return (ordered by preferred_date descending).
+ *     responses:
+ *       200:
+ *         description: A list of appointments for the current person.
+ *       401:
+ *         description: Unauthorized.
+ */
+router.get("/persons/me", verifyToken, getMyPersonAppointments);
 
 /**
  * @openapi

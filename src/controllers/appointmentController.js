@@ -1,4 +1,4 @@
-import { findAll, create, findById, update, remove, findAllByUserId } from '../repositories/appointmentRepository.js';
+import { findAll, create, findById, update, remove, findAllByUserId, findAllByPersonId } from '../repositories/appointmentRepository.js';
 
 export async function getAllAppointments(req, res) {
     try {
@@ -22,6 +22,21 @@ export async function getMyAppointments(req, res) {
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Failed to fetch appointments" });
+    }
+}
+
+export async function getMyPersonAppointments(req, res) {
+    try {
+        const personId = req.user?.oid;
+        if (!personId) {
+            return res.status(401).json({ error: "Unauthorized: person not identified" });
+        }
+        const top = req.query.top != null ? parseInt(req.query.top, 10) : null;
+        const appointments = await findAllByPersonId(personId, Number.isNaN(top) ? null : top);
+        return res.status(200).json(appointments);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Failed to fetch appointments by person" });
     }
 }
 
