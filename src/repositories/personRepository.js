@@ -37,6 +37,16 @@ export async function updatePerson(id, personData) {
   return { id, ...personData };
 }
 
+export async function updatePersonPassword(id, passwordHash) {
+  const [result] = await database
+    .promise()
+    .query("UPDATE persons SET password_hash = ? WHERE id = ?", [
+      passwordHash,
+      id,
+    ]);
+  return result.affectedRows > 0;
+}
+
 export async function removePerson(id) {
   const [result] = await database
     .promise()

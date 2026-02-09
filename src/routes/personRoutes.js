@@ -6,6 +6,9 @@ import {
   deletePerson,
   updatePersonRecord,
   loginUser,
+  getCurrentPerson,
+  updateCurrentPerson,
+  changeCurrentPersonPassword,
 } from "../controllers/personController.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
 
@@ -28,6 +31,81 @@ const router = Router();
  *         description: A list of persons.
  */
 router.get("/", verifyToken, getAllPersons);
+
+/**
+ * @openapi
+ * /api/v1/persons/me:
+ *   get:
+ *     description: Retrieve the currently authenticated person.
+ *     tags: [Persons]
+ *     responses:
+ *       200:
+ *         description: The current person.
+ */
+router.get("/me", verifyToken, getCurrentPerson);
+
+/**
+ * @openapi
+ * /api/v1/persons/me:
+ *   put:
+ *     description: Update the currently authenticated person.
+ *     tags: [Persons]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               full_name:
+ *                 type: string
+ *               date_of_birth:
+ *                 type: string
+ *                 format: date-time
+ *               gender:
+ *                 type: string
+ *               disability_type:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               contact_no:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Person updated successfully.
+ */
+router.put("/me", verifyToken, updateCurrentPerson);
+
+/**
+ * @openapi
+ * /api/v1/persons/me/change-password:
+ *   post:
+ *     description: Change the password of the currently authenticated person.
+ *     tags: [Persons]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - old_password
+ *               - new_password
+ *               - confirm_password
+ *             properties:
+ *               old_password:
+ *                 type: string
+ *               new_password:
+ *                 type: string
+ *               confirm_password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password changed successfully.
+ */
+router.post("/me/change-password", verifyToken, changeCurrentPersonPassword);
 
 /**
  * @openapi

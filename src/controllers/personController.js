@@ -5,6 +5,7 @@ import {
   updatePerson,
   removePerson,
   findByEmail,
+  updatePersonPassword,
 } from "../repositories/personRepository.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -73,12 +74,96 @@ export async function getPersonById(req, res) {
   return res.status(200).json(person);
 }
 
+export async function getCurrentPerson(req, res) {
+  const userId = req.user?.oid;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ error: "User id not found in authentication context" });
+  }
+
+  const person = await findPersonById(userId);
+
+  if (!person) {
+    return res.status(404).json({ error: "Person not found" });
+  }
+
+  return res.status(200).json(person);
+}
+
 export async function updatePersonRecord(req, res) {
   var id = req.params.id;
   var updatedData = req.body;
 
   await updatePerson(id, updatedData);
   return res.status(200).json({ message: "Person updated successfully" });
+}
+
+export async function updateCurrentPerson(req, res) {
+  const userId = req.user?.oid;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ error: "User id not found in authentication context" });
+  }
+
+  const updatedData = { ...req.body };
+
+  // Never allow clients to override the identifier or password fields
+  delete updatedData.id;
+  delete updatedData.password;
+  delete updatedData.password_hash;
+
+  await updatePerson(userId, updatedData);
+
+  return res.status(200).json({ message: "Person updated successfully" });
+}
+
+export async function changeCurrentPersonPassword(req, res) {
+  const userId = req.user?.oid;
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ error: "User id not found in authentication context" });
+  }
+
+  const { old_password, new_password, confirm_password } = req.body || {};
+
+  if (!old_password || !new_password || !confirm_password) {
+    return res.status(400).json({
+      error: "old_password, new_password, and confirm_password are required",
+    });
+  }
+
+  if (new_password !== confirm_password) {
+    return res
+      .status(400)
+      .json({ error: "New password and confirm password do not match" });
+  }
+
+  const person = await findPersonById(userId);
+
+  if (!person) {
+    return res.status(404).json({ error: "Person not found" });
+  }
+
+  const isOldPasswordValid = await bcrypt.compare(
+    old_password,
+    person.password_hash,
+  );
+
+  if (!isOldPasswordValid) {
+    return res.status(400).json({ error: "Old password is incorrect" });
+  }
+
+  const newPasswordHash = await bcrypt.hash(new_password, 10);
+
+  await updatePersonPassword(userId, newPasswordHash);
+
+  return res.status(200).json({ message: "Password changed successfully" });
 }
 
 export async function deletePerson(req, res) {
