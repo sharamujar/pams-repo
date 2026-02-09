@@ -32,6 +32,7 @@ export async function findAllByPersonId(personId, top = null) {
              JOIN persons p ON a.person_id = p.id
              JOIN service_types s ON a.service_id = s.id
              WHERE a.person_id = ?
+             AND a.status =2
              ORDER BY a.preferred_date DESC`;
     const params = [personId];
     const limit = top != null && Number.isInteger(top) && top > 0 ? Math.min(top, 1000) : null;
