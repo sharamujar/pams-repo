@@ -3,6 +3,7 @@ import {
   getAllAppointments,
   getMyAppointments,
   getMyPersonAppointments,
+  getNextPersonAppointment,
   createAppointment,
   getAppointmentById,
   deleteAppointment,
@@ -69,6 +70,22 @@ router.get("/me", verifyToken, getMyAppointments);
  *         description: Unauthorized.
  */
 router.get("/persons/me", verifyToken, getMyPersonAppointments);
+
+/**
+ * @openapi
+ * /api/v1/appointments/persons/me/next:
+ *   get:
+ *     description: Retrieve the next upcoming appointment for the authenticated person (person_id from JWT oid).
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: The next appointment for the person, or null if none found.
+ *       401:
+ *         description: Unauthorized.
+ */
+router.get("/persons/me/next", verifyToken, getNextPersonAppointment);
 
 /**
  * @openapi

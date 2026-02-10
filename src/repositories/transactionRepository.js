@@ -38,6 +38,12 @@ export async function findAllByPersonId(personId, filter = {}) {
     params.push(filter.status);
   }
 
+  if (filter.top !== undefined) {
+    const limit = Math.max(1, parseInt(filter.top, 10) || 1);
+    query += " LIMIT ?";
+    params.push(limit);
+  }
+
   const [rows] = await database.promise().query(query, params);
   return rows;
 }

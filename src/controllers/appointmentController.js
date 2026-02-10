@@ -1,4 +1,4 @@
-import { findAll, create, findById, update, remove, findAllByUserId, findAllByPersonId } from '../repositories/appointmentRepository.js';
+import { findAll, create, findById, update, remove, findAllByUserId, findAllByPersonId, findNextByPersonId } from '../repositories/appointmentRepository.js';
 
 export async function getAllAppointments(req, res) {
     try {
@@ -37,6 +37,20 @@ export async function getMyPersonAppointments(req, res) {
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Failed to fetch appointments by person" });
+    }
+}
+
+export async function getNextPersonAppointment(req, res) {
+    try {
+        const personId = req.user?.oid;
+        if (!personId) {
+            return res.status(401).json({ error: "Unauthorized: person not identified" });
+        }
+        const appointment = await findNextByPersonId(personId);
+        return res.status(200).json(appointment || null);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Failed to fetch next appointment by person" });
     }
 }
 

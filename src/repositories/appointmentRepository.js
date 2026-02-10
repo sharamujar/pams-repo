@@ -44,6 +44,21 @@ export async function findAllByPersonId(personId, top = null) {
     return rows;
 }
 
+export async function findNextByPersonId(personId) {
+    const sql = `SELECT a.*, p.full_name AS person_name, p.contact_no AS person_contact,
+                    s.name AS service_name, s.description AS service_description, s.category AS service_category
+             FROM appointments a
+             JOIN persons p ON a.person_id = p.id
+             JOIN service_types s ON a.service_id = s.id
+             WHERE a.person_id = ?
+             AND (a.status = 2 OR a.status = 1)
+             AND a.preferred_date >= NOW()
+             ORDER BY a.preferred_date ASC
+             LIMIT 1`;
+    const [rows] = await database.promise().query(sql, [personId]);
+    return rows[0];
+}
+
 export async function create(appointmentData) {
     const [result] = await database.promise().query(
         'INSERT INTO appointments SET ?',
