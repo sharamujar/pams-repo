@@ -51,7 +51,7 @@ export async function findNextByPersonId(personId) {
              JOIN persons p ON a.person_id = p.id
              JOIN service_types s ON a.service_id = s.id
              WHERE a.person_id = ?
-             AND (a.status = 2 OR a.status = 1)
+             AND (a.status = 3 OR a.status = 1)
              AND a.preferred_date >= NOW()
              ORDER BY a.preferred_date ASC
              LIMIT 1`;
@@ -97,6 +97,13 @@ export async function update(id, appointmentData) {
         );
 
     return { id, ...appointmentData };
+}
+
+export async function updateStatusTo3(id) {
+    const [result] = await database
+        .promise()
+        .query('UPDATE appointments SET status = 3 WHERE id = ?', [id]);
+    return result.affectedRows > 0;
 }
 
 export async function remove(id) {

@@ -8,6 +8,7 @@ import {
   getAppointmentById,
   deleteAppointment,
   updateAppointment,
+  updateAppointmentStatusTo3,
 } from "../controllers/appointmentController.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
 
@@ -131,5 +132,17 @@ router.delete("/:id", deleteAppointment);
  *         description: Appointment updated successfully.
  */
 router.put("/:id", updateAppointment);
+
+/**
+ * @openapi
+ * /api/v1/appointments/{id}/status/reschedule:
+ *   put:
+ *     description: Update an appointment status to reschedule by ID.
+ *     tags: [Appointments]
+ *     responses:
+ *       200:
+ *         description: Appointment status updated successfully.
+ */
+router.put("/:id/status/reschedule", updateAppointmentStatusTo3);
 
 export default router;

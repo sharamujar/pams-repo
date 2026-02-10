@@ -1,4 +1,4 @@
-import { findAll, create, findById, update, remove, findAllByUserId, findAllByPersonId, findNextByPersonId } from '../repositories/appointmentRepository.js';
+import { findAll, create, findById, update, remove, findAllByUserId, findAllByPersonId, findNextByPersonId, updateStatusTo3 } from '../repositories/appointmentRepository.js';
 
 export async function getAllAppointments(req, res) {
     try {
@@ -114,5 +114,17 @@ export async function deleteAppointment(req, res) {
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Failed to delete appointment" });
+    }
+}
+
+export async function updateAppointmentStatusTo3(req, res) {
+    try {
+        const updated = await updateStatusTo3(req.params.id);
+        return res.status(200).json({
+            message: updated ? "Appointment status updated to 3" : "Appointment not found"
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Failed to update appointment status" });
     }
 }
